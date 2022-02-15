@@ -14,7 +14,6 @@ abstract class BaseContainer
     private int _length;
     private int _width;
     private int _height;
-    private String _holder;
     
 
     /**
