@@ -10,9 +10,12 @@ public class Container extends BaseContainer {
 
     /**
      * Constructor
+     * 
+     * @param name
+     * @param dimensions
      */
-    public Container(String name, int length, int width, int height)
+    public Container(String name, int[] dimensions)
     {
-        super(name, length, width, height);
+        super(name, dimensions);
     }
 }

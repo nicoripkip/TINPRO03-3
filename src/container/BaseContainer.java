@@ -11,21 +11,17 @@ abstract class BaseContainer
 {
     private UUID _uuid;
     private String _name;
-    private int _length;
-    private int _width;
-    private int _height;
+    private int[] _dimensions;
     private String _holder;
     
 
     /**
      * Constructor
      */
-    public BaseContainer(String name, int length, int width, int height)
+    public BaseContainer(String name, int[] dimensions)
     {
         this._name = name;
-        this._length = length;
-        this._width = width;
-        this._height = height;
+        this._dimensions = dimensions;
     }
 
 
