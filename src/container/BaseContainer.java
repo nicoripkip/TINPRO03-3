@@ -11,8 +11,14 @@ abstract class BaseContainer
 {
     private UUID _uuid;
     private String _name;
+<<<<<<< HEAD
     private int[] _dimensions;
     private String _holder;
+=======
+    private int _length;
+    private int _width;
+    private int _height;
+>>>>>>> refs/remotes/origin/main
     
 
     /**
