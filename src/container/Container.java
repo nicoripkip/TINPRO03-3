@@ -1,6 +1,9 @@
 package container;
 
 
+import main.*;
+
+
 /**
  * 
  */
@@ -29,12 +32,12 @@ public class Container extends BaseContainer {
         int i;
 
         if (goods.length <= 0) {
-            System.out.println("[info]\t\tDe container is leeg!");
+            System.out.println(Colors.TEXT_BLUE + "[info]" + Colors.TEXT_RESET + "\t\tDe container is leeg!");
             return;
         } 
 
         for (i = 0; i < goods.length; i++) {
-            System.out.println("[info]\t\tInhoud: " + goods[i].toString());
+            System.out.println(Colors.TEXT_BLUE + "[info]" + Colors.TEXT_RESET + "\t\tInhoud: " + goods[i].toString());
         }
     }
 }

@@ -2,6 +2,16 @@ package trucks;
 
 
 /**
+ * 
+ */
+enum ContainerTypes {
+    Normal,
+    Heating,
+    Cooling,
+}
+
+
+/**
  * @author Nico van Ommen - 1030808
  * @since 03/28/2020
  */

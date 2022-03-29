@@ -1,6 +1,12 @@
 package trucks;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import container.Container;
+import main.Colors;
+
+
 /**
  * @author Nico van Ommen - 1030808
  * @since 03/28/2020
@@ -8,6 +14,8 @@ package trucks;
 public class ContainerTruck extends BaseTruck 
 {
     private boolean _thread_run_flag = false;
+    private static final int MAX_CONTAINER = 1;
+    private List<Container> load = new ArrayList<Container>();
    
    
     /**
@@ -17,7 +25,7 @@ public class ContainerTruck extends BaseTruck
      * @param speed
      * @param type
      */
-    ContainerTruck(String name, int speed, String type)
+    public ContainerTruck(String name, int speed, String type)
     {
         super(name, speed, type);
     }
@@ -42,6 +50,22 @@ public class ContainerTruck extends BaseTruck
     public void kill()
     {
         this.setThreatRunFlag(false);
+    }
+
+
+    /**
+     * Methode voor het laden van een container
+     * 
+     * @param container
+     */
+    public void loadContainer(Container container)
+    {
+        if (this.load.size() > MAX_CONTAINER) {
+            System.out.println(Colors.TEXT_BLUE + "[info]" + Colors.TEXT_RESET + "\t\tVrachtwagen is volgeladen!");
+            return;
+        }
+
+        this.load.add(container);
     }
 
 
