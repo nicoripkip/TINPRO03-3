@@ -5,7 +5,8 @@ import main.*;
 
 
 /**
- * 
+ * @author Nico van Ommen - 1030808
+ * @since 03/29/2022
  */
 public class Container extends BaseContainer {
     private String[] goods;

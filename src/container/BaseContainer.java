@@ -5,7 +5,8 @@ import java.util.UUID;
 
 
 /**
- * 
+ * @author Nico van Ommen - 1030808
+ * @since 03/29/2022
  */
 abstract class BaseContainer 
 {
