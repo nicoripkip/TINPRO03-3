@@ -19,7 +19,8 @@ abstract class BaseCrane extends Thread
      */
     public BaseCrane(String name, int speed)
     {
-
+        this.setCraneName(name);
+        this.setCraneSpeed(speed);
     }
 
 
@@ -31,5 +32,38 @@ abstract class BaseCrane extends Thread
     public void setCraneName(String name)
     {
         this._name = name;
+    }
+
+
+    /**
+     * Methode voor het ophalen van de kraan naam
+     * 
+     * @return String
+     */
+    public String getCraneName()
+    {
+        return this._name;
+    }
+
+
+    /**
+     * Methode voor het zetten van de kraan snelheid
+     * 
+     * @param speed
+     */
+    public void setCraneSpeed(int speed)
+    {
+        this._speed = speed;
+    }
+
+
+    /**
+     * Methode voor het ophalen van de kraansnelheid
+     * 
+     * @return int
+     */
+    public int getCraneSpeed()
+    {
+        return this._speed;
     }
 }

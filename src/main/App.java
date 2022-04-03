@@ -28,21 +28,92 @@ public class App {
         ContainerTruck containerTruck2 = new ContainerTruck("Truck2", 20, "normal");
         ContainerTruck containerTruck3 = new ContainerTruck("Truck3", 20, "normal");
 
-        ContainerCrane crane1 = new ContainerCrane();
-        ContainerCrane crane2 = new ContainerCrane();
+        ContainerCrane crane1 = new ContainerCrane("Kraan 1", 30);
+        ContainerCrane crane2 = new ContainerCrane("Kraan 2", 40);
 
         Dock containerDock = new Dock();
 
+        // De threads van de trucks worden hier gestart!
         Thread truckThread1 = new Thread(new Runnable() {
             @Override
             public void run()
             {
-                try {
+                try 
+                {
                     containerTruck1.consume();
-                } catch (InterruptedException e) {
+                } 
+                catch (InterruptedException e) 
+                {
 
                 }
             }
         });
+        Thread truckThread2 = new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                try 
+                {
+                    containerTruck2.consume();
+                } 
+                catch (InterruptedException e)
+                {
+
+                }
+            }
+        });
+        Thread truckThread3 = new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    containerTruck3.consume();
+                }
+                catch (InterruptedException e)
+                {
+
+                }
+            }
+        });
+
+
+        // De threads van de kranen
+        Thread craneThread1 = new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                try 
+                {
+                    crane1.produce();
+                } 
+                catch (InterruptedException e) 
+                {
+                    //TODO: handle exception
+                }
+            }
+        });
+        Thread craneThread2 = new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                try 
+                {
+                    crane2.produce(containerDock);
+                } 
+                catch (InterruptedException e) 
+                {
+                    //TODO: handle exception
+                }
+            }
+        });
+
+
+        // Start de threads
+        truckThread1.start();
+        truckThread2.start();
+        truckThread3.start();
+        crane1.start();
+        crane2.start();
     }
 }
