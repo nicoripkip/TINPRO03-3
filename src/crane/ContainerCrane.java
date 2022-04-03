@@ -4,6 +4,7 @@ package crane;
 import container.Container;
 import docks.Dock;
 import ship.ContainerShip;
+import main.Colors;
 
 
 /**
@@ -39,8 +40,23 @@ public class ContainerCrane extends BaseCrane
         {
             synchronized (this) 
             {
-                while (dock.getContainerLength() >= 5) wait();
-                while (ship.) wait();
+                while (dock.getContainerLength() >= 5) 
+                {
+                    System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot er weer ruimte is op de dock!");
+                    wait();
+                }                
+                while (ship.getContainerCount()==0) 
+                {
+                    System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot er weer een nieuw schip aankomt!");
+                    wait();
+                }
+
+                Container container = ship.unload();
+                System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " haalt nu container: " + container.getUUID() + " uit schip: " + ship.getName() + " gehaalt!");
+                dock.load(container);
+                System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " heeft nu container: " + container.getUUID() + " op de kade gezet!");
+
+                notify();
             }
         }
     }

@@ -52,4 +52,26 @@ public class Dock {
     {
         return this.containers;
     }
+
+
+    /**
+     * Methode voor het laden van de dock
+     * 
+     * @param container
+     */
+    public void load(Container container)
+    {
+        this.getContainers().add(container);
+    }
+
+
+    /**
+     * Methode voor het ontladen van de docks
+     * 
+     * @return Container
+     */
+    public Container unload()
+    {
+        return this.getContainers().remove(this.getContainerLength()-1);
+    }
 }

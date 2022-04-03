@@ -8,18 +8,20 @@ import container.Container;
  * @author Nico van Ommen
  * @since 04/03/2022
  */
-public class ContainerShip 
+public class ContainerShip
 {
+    private final int MAX_CONTAINER_LIMIT = 100;
     private ArrayList<Container> _containers;
+    private String _name;
 
 
     /**
      * Constructor
      */
-    public ContainerShip()
+    public ContainerShip(String name)
     {
         this.setContainerList(new ArrayList<Container>());
-        this.getContainerList();
+        this.generateShipPayload(MAX_CONTAINER_LIMIT);
     }
     
     
@@ -57,8 +59,50 @@ public class ContainerShip
      * 
      * @return ArrayList<Container>
      */
-    private ArrayList<Container> getContainerList()
+    public ArrayList<Container> getContainerList()
     {
         return this._containers;
+    }
+
+
+    /**
+     * Methode om het aantal containers op het 
+     * 
+     * @return
+     */
+    public int getContainerCount()
+    {
+        return this.getContainerList().size();
+    }
+
+
+    /**
+     * Methode voor het uitladen van het schip
+     */
+    public Container unload()
+    {
+        return this.getContainerList().remove(this.getContainerCount()-1);
+    }
+
+
+    /**
+     * Methode om de naam van het schip te zetten
+     * 
+     * @param name
+     */
+    private void setName(String name)
+    {
+        this._name = name;
+    }
+
+
+    /**
+     * Methode om de naam van het schip op te halen
+     * 
+     * @return String
+     */
+    public String getName()
+    {
+        return this._name;
     }
 }

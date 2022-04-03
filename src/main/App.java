@@ -12,6 +12,7 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.Timer;
 
+
 /**
  * @author Niko van Ommen
  * @since 03/29/2020
@@ -32,6 +33,7 @@ public class App {
         ContainerCrane crane2 = new ContainerCrane("Kraan 2", 40);
 
         Dock containerDock = new Dock();
+        ContainerShip containerShip = new ContainerShip("Mearsk");
 
         // De threads van de trucks worden hier gestart!
         Thread truckThread1 = new Thread(new Runnable() {
@@ -85,11 +87,11 @@ public class App {
             {
                 try 
                 {
-                    crane1.produce();
+                    crane1.produce(containerDock, containerShip);
                 } 
                 catch (InterruptedException e) 
                 {
-                    //TODO: handle exception
+                    System.out.println("["+Colors.TEXT_RED + "error" + Colors.TEXT_RESET + "]\t\tError: " + e);
                 }
             }
         });
@@ -99,21 +101,21 @@ public class App {
             {
                 try 
                 {
-                    crane2.produce(containerDock);
+                    crane2.produce(containerDock, containerShip);
                 } 
                 catch (InterruptedException e) 
                 {
-                    //TODO: handle exception
+                    System.out.println("["+Colors.TEXT_RED + "error" + Colors.TEXT_RESET + "]\t\tError: " + e);
                 }
             }
         });
 
 
         // Start de threads
-        truckThread1.start();
-        truckThread2.start();
-        truckThread3.start();
-        crane1.start();
-        crane2.start();
+        // truckThread1.start();
+        // truckThread2.start();
+        // truckThread3.start();
+        craneThread1.start();
+        craneThread2.start();
     }
 }
