@@ -4,6 +4,7 @@ package main;
 import trucks.ContainerTruck;
 import container.Container;
 import crane.ContainerCrane;
+import docks.Dock;
 import ship.ContainerShip;
 
 import java.util.LinkedList;
@@ -23,13 +24,25 @@ public class App {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        Queue<ContainerTruck> containerTrucks = new LinkedList<ContainerTruck>();
+        ContainerTruck containerTruck1 = new ContainerTruck("Truck1", 20, "normal");
+        ContainerTruck containerTruck2 = new ContainerTruck("Truck2", 20, "normal");
+        ContainerTruck containerTruck3 = new ContainerTruck("Truck3", 20, "normal");
 
-        for (int i = 0; i < 100; i++) {
-            containerTrucks.add(new ContainerTruck("Truck"+i, new Random().nextInt(50), "Normal"));
-        }
+        ContainerCrane crane1 = new ContainerCrane();
+        ContainerCrane crane2 = new ContainerCrane();
 
+        Dock containerDock = new Dock();
 
-        System.out.println(Colors.TEXT_BLUE + "[info]" + Colors.TEXT_RESET + "\t\tAantal trucks in queue: " + containerTrucks.size());
+        Thread truckThread1 = new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                try {
+                    containerTruck1.consume();
+                } catch (InterruptedException e) {
+
+                }
+            }
+        });
     }
 }

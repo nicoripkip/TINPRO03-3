@@ -13,7 +13,6 @@ import main.Colors;
  */
 public class ContainerTruck extends BaseTruck 
 {
-    private boolean _thread_run_flag = false;
     private static final int MAX_CONTAINER = 1;
     private List<Container> load = new ArrayList<Container>();
    
@@ -32,24 +31,11 @@ public class ContainerTruck extends BaseTruck
     
     
     /**
-     * Methode v
+     * Methode voor het uitvoeren van de thread code
      */
-    public void run()
+    public void consume() throws InterruptedException
     {
-        this.setThreatRunFlag(true);
-
-        while (this.getThreadRunFlag() == true) {
-            // TODO
-        }
-    }
-
-
-    /**
-     * Methode om de thread te stoppen
-     */
-    public void kill()
-    {
-        this.setThreatRunFlag(false);
+        
     }
 
 
@@ -66,27 +52,5 @@ public class ContainerTruck extends BaseTruck
         }
 
         this.load.add(container);
-    }
-
-
-    /**
-     * Methode voor het zetten van de run flag
-     * 
-     * @param flag
-     */
-    private void setThreatRunFlag(boolean flag)
-    {
-        this._thread_run_flag = flag;
-    }
-
-
-    /**
-     * Methode voor het ophalen van de run flag
-     * 
-     * @return
-     */
-    private boolean getThreadRunFlag()
-    {
-        return this._thread_run_flag;
     }
 }
