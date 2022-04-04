@@ -13,8 +13,8 @@ import main.Colors;
  */
 public class ContainerCrane extends BaseCrane
 {
-    private boolean _isFree;
-    private Container container;
+    private Container _container;
+    private ContainerShip _ship;
     
 
     /**
@@ -23,41 +23,123 @@ public class ContainerCrane extends BaseCrane
      * @param name
      * @param speed
      */
-    public ContainerCrane(String name, int speed)
+    public ContainerCrane(String name, int speed, Dock dock, ContainerShip ship)
     {
-        super(name, speed);
+        super(name, speed, dock);
+
+        this.setContainerShip(ship);
     }
 
 
     /**
-     * Functie die de threat laat starten
      * 
-     * @param dock
      */
-    public void produce(Dock dock, ContainerShip ship) throws InterruptedException
+    @Override
+    public void run()
     {
         while (true) 
         {
-            synchronized (this) 
+            try 
             {
-                while (dock.getContainerLength() >= 5) 
-                {
-                    System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot er weer ruimte is op de dock!");
-                    wait();
-                }                
-                while (ship.getContainerCount()==0) 
-                {
-                    System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot er weer een nieuw schip aankomt!");
-                    wait();
-                }
-
-                Container container = ship.unload();
-                System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " haalt nu container: " + container.getUUID() + " uit schip: " + ship.getName() + " gehaalt!");
-                dock.load(container);
-                System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " heeft nu container: " + container.getUUID() + " op de kade gezet!");
-
-                notify();
+                this.consume();
+                this.produce();
+            }
+            catch (InterruptedException e)
+            {
+                System.out.println("["+Colors.TEXT_RED + "error" + Colors.TEXT_RESET + "]\t\tError: " + e);
             }
         }
+    }
+
+
+    /**
+     * Methode voor het toevoegen van data aan de dock
+     * 
+     * @param dock
+     */
+    public void produce() throws InterruptedException
+    {
+        synchronized (this) 
+        {
+            while (super.getDock().getContainerLength() >= 5) 
+            {
+                System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot er weer ruimte is op de dock!");
+                wait();
+            }                
+            
+            super.getDock().load(this.getContainer());
+            System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " heeft nu container: " + this.getContainer().getUUID() + " op de kade gezet!");
+
+            notify();
+            Thread.sleep(1000);
+        }
+    }
+
+
+    /**
+     * Methode voor het ophalen van data uit de containership buffer
+     * 
+     * @param ship
+     */
+    public void consume() throws InterruptedException
+    {
+        synchronized (this) 
+        {
+            while (this.getContainerShip().getContainerCount() == 0) 
+            {
+                System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot er weer een nieuw schip aankomt!");
+                wait();
+            }
+
+            this.setContainer(this.getContainerShip().unload());
+            System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " haalt nu container: " + this.getContainer().getUUID() + " uit schip: " + this.getContainerShip().getName() + " gehaalt!");
+            
+            notify();
+            Thread.sleep(1000);
+        }
+    }
+
+
+    /**
+     * Methode voor het zetten van de container
+     * 
+     * @param container
+     */
+    private void setContainer(Container container)
+    {
+        this._container = container;
+    }
+
+
+    /**
+     * Methode voor het ophalen van de container
+     * 
+     * @return
+     */
+    private Container getContainer()
+    {
+        return this._container;
+    }
+
+
+    /**
+     * Methode om het containerschip te zetten
+     * 
+     * @param ship
+     */
+    public void setContainerShip(ContainerShip ship)
+    {
+        this._ship = ship;
+    }
+
+
+    /**
+     * Methode om het schip op te halen
+     * 
+     * @return
+     */
+    public ContainerShip getContainerShip()
+    {
+        return this._ship;
     }
 }

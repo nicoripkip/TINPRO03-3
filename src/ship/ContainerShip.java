@@ -22,6 +22,7 @@ public class ContainerShip
     {
         this.setContainerList(new ArrayList<Container>());
         this.generateShipPayload(MAX_CONTAINER_LIMIT);
+        this.setName(name);
     }
     
     

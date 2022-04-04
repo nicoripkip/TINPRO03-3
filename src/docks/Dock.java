@@ -1,8 +1,10 @@
 package docks;
 
+
 import java.util.ArrayList;
 import java.util.Stack;
-
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import container.Container;
 
 /**
@@ -10,7 +12,7 @@ import container.Container;
  * @since 04/03/2022
  */
 public class Dock {
-    private Stack<Container> containers;
+    private Stack<Container> _containers;
     
     
     /**
@@ -39,7 +41,7 @@ public class Dock {
      */
     private void setContainerStack(Stack<Container> containers)
     {
-        this.containers = containers;
+        this._containers = containers;
     }
 
 
@@ -50,7 +52,7 @@ public class Dock {
      */
     private Stack<Container> getContainers()
     {
-        return this.containers;
+        return this._containers;
     }
 
 
