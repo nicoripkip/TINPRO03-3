@@ -1,6 +1,8 @@
 package crane;
 
 
+import java.util.concurrent.Semaphore;
+
 import container.Container;
 import docks.Dock;
 import ship.ContainerShip;
@@ -32,7 +34,7 @@ public class ContainerCrane extends BaseCrane
 
 
     /**
-     * 
+     * Methode voor het runnen
      */
     @Override
     public void run()
@@ -65,12 +67,13 @@ public class ContainerCrane extends BaseCrane
             {
                 System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot er weer ruimte is op de dock!");
                 wait();
-            }                
+            }        
             
             super.getDock().load(this.getContainer());
             System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " heeft nu container: " + this.getContainer().getUUID() + " op de kade gezet!");
 
             notify();
+            super.getDock().getPermit().release();
             Thread.sleep(1000);
         }
     }
@@ -88,6 +91,10 @@ public class ContainerCrane extends BaseCrane
             while (this.getContainerShip().getContainerCount() == 0) 
             {
                 System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot er weer een nieuw schip aankomt!");
+                wait();
+            }
+            while (super.getDock().getPermit().availablePermits() == 0) {
+                System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot hij weer containers mag pakken!");
                 wait();
             }
 

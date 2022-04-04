@@ -1,5 +1,6 @@
 package trucks;
 
+import docks.Dock;
 
 /**
  * @author Nico van Ommen - 1030808
@@ -13,8 +14,8 @@ public class OilTruck extends BaseTruck {
      * @param speed
      * @param type
      */
-    OilTruck(String name, int speed, String type)
+    OilTruck(String name, int speed, String type, Dock dock)
     {
-        super(name, speed, type);
+        super(name, speed, type, dock);
     }
 }

@@ -4,15 +4,21 @@ package docks;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Semaphore;
+
 import container.Container;
+
 
 /**
  * @author Nico van Ommen - 1030808
  * @since 04/03/2022
  */
 public class Dock {
-    private Stack<Container> _containers;
+    private static final int MAX_CONTAINERS = 5;
+    private static final int MAX_CRANE_PERMITS = 1;
+
+    private ArrayBlockingQueue<Container> _containers;
+    private Semaphore _permit;
     
     
     /**
@@ -20,7 +26,8 @@ public class Dock {
      */
     public Dock()
     {
-        this.setContainerStack(new Stack<Container>());
+        this.setContainerStack(new ArrayBlockingQueue<Container>(MAX_CONTAINERS));
+        this.setPermit(new Semaphore(MAX_CRANE_PERMITS));
     }
 
 
@@ -39,7 +46,7 @@ public class Dock {
      * 
      * @param containers
      */
-    private void setContainerStack(Stack<Container> containers)
+    private void setContainerStack(ArrayBlockingQueue<Container> containers)
     {
         this._containers = containers;
     }
@@ -50,7 +57,7 @@ public class Dock {
      * 
      * @return Stack<Containers>
      */
-    private Stack<Container> getContainers()
+    private ArrayBlockingQueue<Container> getContainers()
     {
         return this._containers;
     }
@@ -74,6 +81,28 @@ public class Dock {
      */
     public Container unload()
     {
-        return this.getContainers().remove(this.getContainerLength()-1);
+        return this.getContainers().remove();
+    }
+
+
+    /**
+     * Methode voor het zetten van een nieuwe permit
+     * 
+     * @param permit
+     */
+    private void setPermit(Semaphore permit)
+    {
+        this._permit = permit;
+    }
+
+
+    /**
+     * Methode voor het ophalen 
+     * 
+     * @return Semaphore
+     */
+    public Semaphore getPermit()
+    {
+        return this._permit;
     }
 }

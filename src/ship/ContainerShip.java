@@ -1,6 +1,7 @@
 package ship;
 
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import container.Container;
 
@@ -11,7 +12,7 @@ import container.Container;
 public class ContainerShip
 {
     private final int MAX_CONTAINER_LIMIT = 100;
-    private ArrayList<Container> _containers;
+    private ArrayBlockingQueue<Container> _containers;
     private String _name;
 
 
@@ -20,7 +21,7 @@ public class ContainerShip
      */
     public ContainerShip(String name)
     {
-        this.setContainerList(new ArrayList<Container>());
+        this.setContainerList(new ArrayBlockingQueue<Container>(MAX_CONTAINER_LIMIT));
         this.generateShipPayload(MAX_CONTAINER_LIMIT);
         this.setName(name);
     }
@@ -49,7 +50,7 @@ public class ContainerShip
      * 
      * @param containers
      */
-    private void setContainerList(ArrayList<Container> containers)
+    private void setContainerList(ArrayBlockingQueue<Container> containers)
     {
         this._containers = containers;
     }
@@ -60,7 +61,7 @@ public class ContainerShip
      * 
      * @return ArrayList<Container>
      */
-    public ArrayList<Container> getContainerList()
+    public ArrayBlockingQueue<Container> getContainerList()
     {
         return this._containers;
     }
@@ -82,7 +83,7 @@ public class ContainerShip
      */
     public Container unload()
     {
-        return this.getContainerList().remove(this.getContainerCount()-1);
+        return this.getContainerList().remove();
     }
 
 

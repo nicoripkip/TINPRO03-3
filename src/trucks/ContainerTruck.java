@@ -4,6 +4,7 @@ package trucks;
 import java.util.ArrayList;
 import java.util.List;
 import container.Container;
+import docks.Dock;
 import main.Colors;
 
 
@@ -14,7 +15,7 @@ import main.Colors;
 public class ContainerTruck extends BaseTruck 
 {
     private static final int MAX_CONTAINER = 1;
-    private List<Container> load = new ArrayList<Container>();
+    private Container _container;
    
    
     /**
@@ -24,9 +25,29 @@ public class ContainerTruck extends BaseTruck
      * @param speed
      * @param type
      */
-    public ContainerTruck(String name, int speed, String type)
+    public ContainerTruck(String name, int speed, String type, Dock dock)
     {
-        super(name, speed, type);
+        super(name, speed, type, dock);
+    }
+
+
+    /**
+     * Methode voor het starten van de thread
+     */
+    @Override
+    public void run()
+    {
+        while (true)
+        {
+            try
+            {
+                this.consume();
+            }
+            catch (InterruptedException e)
+            {
+                System.out.println("["+Colors.TEXT_RED + "error" + Colors.TEXT_RESET + "]\t\tError: " + e);
+            }
+        }
     }
     
     
@@ -35,7 +56,20 @@ public class ContainerTruck extends BaseTruck
      */
     public void consume() throws InterruptedException
     {
-        
+        synchronized (this)
+        {
+            while (super.getDock().getContainerLength() == 0) 
+            {
+                System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + super.getTruckName() + " is aan het wachten tot er weer containers beschikbaar zijn!");
+                wait();
+            }
+
+            System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tContainer: " + this.getContainer().getUUID() + " is geladen op vrachtwagen: " + this.getTruckName() + "!");
+            this.load(super.getDock().unload());
+
+            notify();
+            Thread.sleep(1000);
+        }
     }
 
 
@@ -44,13 +78,32 @@ public class ContainerTruck extends BaseTruck
      * 
      * @param container
      */
-    public void loadContainer(Container container)
+    public void load(Container container)
     {
-        if (this.load.size() > MAX_CONTAINER) {
-            System.out.println(Colors.TEXT_BLUE + "[info]" + Colors.TEXT_RESET + "\t\tVrachtwagen is volgeladen!");
-            return;
-        }
+        this._container = container;
+    }
 
-        this.load.add(container);
+
+    /**
+     * Methode voor het verwijderen van de vracht
+     * 
+     * @return Container
+     */
+    public Container unload()
+    {
+        Container temp = this._container;
+        this._container = null;
+        return this._container;
+    }
+
+
+    /**
+     * Methode voor het ophalen van de container
+     * 
+     * @return Container
+     */
+    private Container getContainer()
+    {
+        return this._container;
     }
 }

@@ -1,5 +1,6 @@
 package trucks;
 
+import docks.Dock;
 
 /**
  * 
@@ -20,6 +21,7 @@ abstract class BaseTruck extends Thread
     private String _name;
     private int _speed;
     private String _type;
+    private Dock _dock;
 
 
     /**
@@ -29,11 +31,12 @@ abstract class BaseTruck extends Thread
      * @param speed
      * @param type
      */
-    BaseTruck(String name, int speed, String type)
+    BaseTruck(String name, int speed, String type, Dock dock)
     {
         this.setTruckName(name);
         this.setTruckSpeed(speed);
         this.setTruckType(type);
+        this.setDock(dock);
     }
 
 
@@ -100,5 +103,27 @@ abstract class BaseTruck extends Thread
     public String getTruckType()
     {
         return this._type;
+    }
+
+
+    /**
+     * Methode voor het zetten van een nieuwe dock
+     * 
+     * @param dock
+     */
+    private void setDock(Dock dock)
+    {
+        this._dock = dock;
+    }
+
+
+    /**
+     * Methode voor het ophalen van een dock
+     * 
+     * @return Dock
+     */
+    protected Dock getDock()
+    {
+        return this._dock;
     }
 }

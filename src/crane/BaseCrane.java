@@ -6,7 +6,7 @@ import docks.Dock;
  * @author Nico van Ommen - 1030808
  * @since 04/03/2022
  */
-abstract class BaseCrane implements Runnable
+abstract class BaseCrane extends Thread implements Runnable
 {
     private String _name;
     private int _speed;
