@@ -1,19 +1,22 @@
 package ship;
 
-import java.util.ArrayList;
+
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import container.Container;
 
 /**
- * @author Nico van Ommen
+ * @author Nico van Ommen - 1030808
  * @since 04/03/2022
  */
 public class ContainerShip
 {
     private final int MAX_CONTAINER_LIMIT = 100;
+
     private ArrayBlockingQueue<Container> _containers;
     private String _name;
+    private Random _random = new Random();
 
 
     /**
@@ -40,7 +43,7 @@ public class ContainerShip
 
         for (i = 0; i < size; i++)
         {
-            this.getContainerList().add(new Container("Container"+i, dimensions));
+            this.getContainerList().add(new Container("Container"+i, dimensions, this.getRandomcontainerType(3)));
         }
     }
 
@@ -106,5 +109,26 @@ public class ContainerShip
     public String getName()
     {
         return this._name;
+    }
+
+
+    /**
+     * Methode voor het random genereren van de container type
+     * 
+     * @return String
+     */
+    private String getRandomcontainerType(int max)
+    {
+        switch (this._random.nextInt(max)) 
+        {
+            case 0:
+                return "normal";
+            case 1:
+                return "heating";
+            case 2:
+                return "cooling";
+        }
+
+        return "";
     }
 }

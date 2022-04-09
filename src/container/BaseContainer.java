@@ -14,15 +14,21 @@ abstract class BaseContainer
     private String _name;
     private int[] _dimensions;
     private String _holder;
+    private String _type;
     
 
     /**
      * Constructor
+     * 
+     * @param name
+     * @param dimensions
+     * @param type
      */
-    public BaseContainer(String name, int[] dimensions)
+    public BaseContainer(String name, int[] dimensions, String type)
     {
         this._name = name;
         this._dimensions = dimensions;
+        this.setContainerType(type);
     }
 
 
@@ -43,5 +49,27 @@ abstract class BaseContainer
     public UUID getUUID()
     {
         return this._uuid;
+    }
+
+
+    /**
+     * Methode voor het zetten van de container type
+     * 
+     * @param type
+     */
+    private void setContainerType(String type)
+    {
+        this._type = type;
+    }
+
+
+    /**
+     * Methode voor het ophalen van de container type
+     * 
+     * @return String
+     */
+    public String getContainerType()
+    {
+        return this._type;
     }
 }

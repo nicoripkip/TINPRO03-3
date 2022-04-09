@@ -1,6 +1,8 @@
 package trucks;
 
+
 import docks.Dock;
+
 
 /**
  * 
@@ -21,7 +23,7 @@ abstract class BaseTruck extends Thread
 {
     private String _name;
     private int _speed;
-    private String _type;
+    private ContainerTypes _type;
     private Dock _dock;
     protected boolean _thread_finish = false;
 
@@ -93,7 +95,12 @@ abstract class BaseTruck extends Thread
      */
     protected void setTruckType(String type)
     {
-        this._type = type;
+        switch (type) 
+        {
+            case "normal" -> this._type = ContainerTypes.Normal;
+            case "heating" -> this._type = ContainerTypes.Heating;
+            case "cooling" -> this._type = ContainerTypes.Cooling;
+        }
     }
 
 
@@ -102,7 +109,7 @@ abstract class BaseTruck extends Thread
      * 
      * @return
      */
-    public String getTruckType()
+    public ContainerTypes getTruckType()
     {
         return this._type;
     }
