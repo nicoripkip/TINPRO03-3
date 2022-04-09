@@ -5,7 +5,8 @@ import docks.Dock;
 /**
  * 
  */
-enum ContainerTypes {
+enum ContainerTypes 
+{
     Normal,
     Heating,
     Cooling,
@@ -22,6 +23,7 @@ abstract class BaseTruck extends Thread
     private int _speed;
     private String _type;
     private Dock _dock;
+    protected boolean _thread_finish = false;
 
 
     /**

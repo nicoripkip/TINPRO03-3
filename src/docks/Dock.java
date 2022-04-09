@@ -13,12 +13,14 @@ import container.Container;
  * @author Nico van Ommen - 1030808
  * @since 04/03/2022
  */
-public class Dock {
+public class Dock 
+{
     private static final int MAX_CONTAINERS = 5;
     private static final int MAX_CRANE_PERMITS = 1;
 
     private ArrayBlockingQueue<Container> _containers;
     private Semaphore _permit;
+    private boolean _ship_departed;
     
     
     /**
@@ -104,5 +106,27 @@ public class Dock {
     public Semaphore getPermit()
     {
         return this._permit;
+    }
+
+
+    /**
+     * Methode voor het zetten van het ship departed
+     * 
+     * @param shipDeparted
+     */
+    public void setShipDeparted(boolean shipDeparted)
+    {
+        this._ship_departed = shipDeparted;
+    }
+
+
+    /**
+     * Methode voor het ophalen van het ship departed
+     * 
+     * @return boolean
+     */
+    public boolean getShipDeparted()
+    {
+        return this._ship_departed;
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import container.Container;
 import docks.Dock;
 import main.Colors;
+import static java.lang.System.out;
 
 
 /**
@@ -37,7 +38,7 @@ public class ContainerTruck extends BaseTruck
     @Override
     public void run()
     {
-        while (true)
+        while (!this._thread_finish)
         {
             try
             {
@@ -56,19 +57,28 @@ public class ContainerTruck extends BaseTruck
      */
     public void consume() throws InterruptedException
     {
-        synchronized (this)
+        synchronized (super.getDock())
         {
             while (super.getDock().getContainerLength() == 0) 
             {
-                System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + super.getTruckName() + " is aan het wachten tot er weer containers beschikbaar zijn!");
-                wait();
+                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + super.getTruckName() + " is aan het wachten tot er weer containers beschikbaar zijn!");
+                
+                if (super.getDock().getShipDeparted()) 
+                {
+                    super._thread_finish = true;
+                    return;
+                } 
+                else 
+                {
+                    super.getDock().wait();
+                }
             }
 
-            System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tContainer: " + this.getContainer().getUUID() + " is geladen op vrachtwagen: " + this.getTruckName() + "!");
             this.load(super.getDock().unload());
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tContainer: " + this.getContainer().getUUID() + " is geladen op vrachtwagen: " + this.getTruckName() + "!");
 
-            notify();
-            Thread.sleep(1000);
+            super.getDock().notify();
+            Thread.sleep(10);
         }
     }
 
@@ -93,7 +103,7 @@ public class ContainerTruck extends BaseTruck
     {
         Container temp = this._container;
         this._container = null;
-        return this._container;
+        return temp;
     }
 
 

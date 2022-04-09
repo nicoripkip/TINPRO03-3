@@ -2,6 +2,7 @@ package crane;
 
 
 import java.util.concurrent.Semaphore;
+import java.util.function.Supplier;
 
 import container.Container;
 import docks.Dock;
@@ -17,6 +18,7 @@ public class ContainerCrane extends BaseCrane
 {
     private Container _container;
     private ContainerShip _ship;
+    private boolean _thread_finish = false;
     
 
     /**
@@ -39,7 +41,7 @@ public class ContainerCrane extends BaseCrane
     @Override
     public void run()
     {
-        while (true) 
+        while (!this._thread_finish) 
         {
             try 
             {
@@ -61,20 +63,20 @@ public class ContainerCrane extends BaseCrane
      */
     public void produce() throws InterruptedException
     {
-        synchronized (this) 
+        synchronized (super.getDock()) 
         {
             while (super.getDock().getContainerLength() >= 5) 
             {
                 System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot er weer ruimte is op de dock!");
-                wait();
+                super.getDock().wait();
             }        
             
             super.getDock().load(this.getContainer());
             System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " heeft nu container: " + this.getContainer().getUUID() + " op de kade gezet!");
 
-            notify();
+            super.getDock().notify();
             super.getDock().getPermit().release();
-            Thread.sleep(1000);
+            Thread.sleep(10);
         }
     }
 
@@ -86,23 +88,25 @@ public class ContainerCrane extends BaseCrane
      */
     public void consume() throws InterruptedException
     {
-        synchronized (this) 
+        synchronized (this.getContainerShip()) 
         {
             while (this.getContainerShip().getContainerCount() == 0) 
             {
                 System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot er weer een nieuw schip aankomt!");
-                wait();
+                this._thread_finish = true;
+                super.getDock().setShipDeparted(this._thread_finish);
+                return;
             }
             while (super.getDock().getPermit().availablePermits() == 0) {
                 System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " is aan het wachten tot hij weer containers mag pakken!");
-                wait();
+                this.getContainerShip().wait();
             }
 
             this.setContainer(this.getContainerShip().unload());
             System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + this.getCraneName() + " haalt nu container: " + this.getContainer().getUUID() + " uit schip: " + this.getContainerShip().getName() + " gehaalt!");
             
-            notify();
-            Thread.sleep(1000);
+            this.getContainerShip().notify();
+            Thread.sleep(10);
         }
     }
 
