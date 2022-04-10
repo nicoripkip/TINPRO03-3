@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import container.Container;
+import container.ContainerTypes;
 
 /**
  * @author Nico van Ommen - 1030808
@@ -117,18 +118,18 @@ public class ContainerShip
      * 
      * @return String
      */
-    private String getRandomcontainerType(int max)
+    private ContainerTypes getRandomcontainerType(int max)
     {
         switch (this._random.nextInt(max)) 
         {
             case 0:
-                return "normal";
+                return ContainerTypes.Normal;
             case 1:
-                return "heating";
+                return ContainerTypes.Heating;
             case 2:
-                return "cooling";
+                return ContainerTypes.Cooling;
         }
 
-        return "";
+        return ContainerTypes.Normal;
     }
 }

@@ -1,6 +1,7 @@
 package container;
 
 
+import java.util.Collection;
 import java.util.UUID;
 
 
@@ -14,7 +15,7 @@ abstract class BaseContainer
     private String _name;
     private int[] _dimensions;
     private String _holder;
-    private String _type;
+    private ContainerTypes _type;
     
 
     /**
@@ -24,7 +25,7 @@ abstract class BaseContainer
      * @param dimensions
      * @param type
      */
-    public BaseContainer(String name, int[] dimensions, String type)
+    public BaseContainer(String name, int[] dimensions, ContainerTypes type)
     {
         this._name = name;
         this._dimensions = dimensions;
@@ -57,7 +58,7 @@ abstract class BaseContainer
      * 
      * @param type
      */
-    private void setContainerType(String type)
+    private void setContainerType(ContainerTypes type)
     {
         this._type = type;
     }
@@ -68,7 +69,7 @@ abstract class BaseContainer
      * 
      * @return String
      */
-    public String getContainerType()
+    public ContainerTypes getContainerType()
     {
         return this._type;
     }

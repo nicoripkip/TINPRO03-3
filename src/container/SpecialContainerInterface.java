@@ -9,25 +9,13 @@ public interface SpecialContainerInterface {
     /**
      * 
      */
-    public void connectCoolingElements();
+    public void connectElements();
 
 
     /**
      * 
      */
-    public void disconnectCoolingElements();
-
-
-    /**
-     * 
-     */
-    public void connectHeatingElements();
-
-
-    /**
-     * 
-     */
-    public void disconnectHeatingElements();
+    public void disconnectElements();
 
 
     /**

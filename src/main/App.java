@@ -6,6 +6,7 @@ import crane.ContainerCrane;
 import docks.Dock;
 import ship.ContainerShip;
 
+
 /**
  * @author Niko van Ommen - 1030808
  * @since 03/29/2020
@@ -22,9 +23,9 @@ public class App
         Dock containerDock = new Dock();
         ContainerShip containerShip = new ContainerShip("Mearsk");
 
-        ContainerTruck containerTruck1 = new ContainerTruck("Truck1", 20, "normal", containerDock);
-        ContainerTruck containerTruck2 = new ContainerTruck("Truck2", 20, "heating", containerDock);
-        ContainerTruck containerTruck3 = new ContainerTruck("Truck3", 20, "cooling", containerDock);
+        ContainerTruck containerTruck1 = new ContainerTruck("Truck1", 20, containerDock);
+        ContainerTruck containerTruck2 = new ContainerTruck("Truck2", 20, containerDock);
+        ContainerTruck containerTruck3 = new ContainerTruck("Truck3", 20, containerDock);
 
         ContainerCrane crane1 = new ContainerCrane("Kraan 1", 30, containerDock, containerShip);
         ContainerCrane crane2 = new ContainerCrane("Kraan 2", 40, containerDock, containerShip);

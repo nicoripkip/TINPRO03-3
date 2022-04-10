@@ -5,17 +5,6 @@ import docks.Dock;
 
 
 /**
- * 
- */
-enum ContainerTypes 
-{
-    Normal,
-    Heating,
-    Cooling,
-}
-
-
-/**
  * @author Nico van Ommen - 1030808
  * @since 03/28/2020
  */
@@ -23,7 +12,6 @@ abstract class BaseTruck extends Thread
 {
     private String _name;
     private int _speed;
-    private ContainerTypes _type;
     private Dock _dock;
     protected boolean _thread_finish = false;
 
@@ -35,11 +23,10 @@ abstract class BaseTruck extends Thread
      * @param speed
      * @param type
      */
-    BaseTruck(String name, int speed, String type, Dock dock)
+    BaseTruck(String name, int speed, Dock dock)
     {
         this.setTruckName(name);
         this.setTruckSpeed(speed);
-        this.setTruckType(type);
         this.setDock(dock);
     }
 
@@ -85,33 +72,6 @@ abstract class BaseTruck extends Thread
     public int getTruckSpeed()
     {
         return this._speed;
-    }
-
-
-    /**
-     * Methode voor het zetten van de truck type
-     * 
-     * @param type
-     */
-    protected void setTruckType(String type)
-    {
-        switch (type) 
-        {
-            case "normal" -> this._type = ContainerTypes.Normal;
-            case "heating" -> this._type = ContainerTypes.Heating;
-            case "cooling" -> this._type = ContainerTypes.Cooling;
-        }
-    }
-
-
-    /**
-     * Methode voor het ophalen van de truck type
-     * 
-     * @return
-     */
-    public ContainerTypes getTruckType()
-    {
-        return this._type;
     }
 
 

@@ -5,13 +5,14 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Semaphore;
 
 import container.Container;
+import container.ContainerTypes;
 
 
 /**
  * @author Nico van Ommen - 1030808
  * @since 04/03/2022
  */
-public class Dock 
+public class Dock
 {
     private static final int MAX_CONTAINERS = 5;
     private static final int MAX_CRANE_PERMITS = 1;
@@ -55,7 +56,7 @@ public class Dock
     /**
      * Methode voor het ophalen van de container stack
      * 
-     * @return Stack<Containers>
+     * @return ArrayBlockingQueue<Container>
      */
     private ArrayBlockingQueue<Container> getContainers()
     {
@@ -126,5 +127,32 @@ public class Dock
     public boolean getShipDeparted()
     {
         return this._ship_departed;
+    }
+
+
+    /**
+     * Methode voor het checken of een container aanwezig is
+     * 
+     * @param type
+     * @return
+     */
+    public boolean containsContainerType(ContainerTypes type)
+    {
+        int i = 0;
+
+        for (Container c : this.getContainers()) 
+        {
+            if (c.getContainerType() == type)
+            {
+                i++;
+            }
+        }
+
+        if (i > 0)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

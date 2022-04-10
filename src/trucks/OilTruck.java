@@ -14,8 +14,8 @@ public class OilTruck extends BaseTruck {
      * @param speed
      * @param type
      */
-    OilTruck(String name, int speed, String type, Dock dock)
+    OilTruck(String name, int speed, Dock dock)
     {
-        super(name, speed, type, dock);
+        super(name, speed, dock);
     }
 }

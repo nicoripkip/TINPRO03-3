@@ -2,6 +2,7 @@ package container;
 
 
 import main.*;
+import static java.lang.System.out;
 
 
 /**
@@ -19,7 +20,7 @@ public class Container extends BaseContainer implements SpecialContainerInterfac
      * @param name
      * @param dimensions
      */
-    public Container(String name, int[] dimensions, String type)
+    public Container(String name, int[] dimensions, ContainerTypes type)
     {
         super(name, dimensions, type);
         super.generateNewUUID();
@@ -35,75 +36,69 @@ public class Container extends BaseContainer implements SpecialContainerInterfac
 
         if (goods.length <= 0) 
         {
-            System.out.println(Colors.TEXT_BLUE + "[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]" + Colors.TEXT_RESET + "\t\tDe container is leeg!");
+            out.println(Colors.TEXT_BLUE + "[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]" + Colors.TEXT_RESET + "\t\tDe container is leeg!");
             return;
         } 
 
         for (i = 0; i < goods.length; i++) 
         {  
-            System.out.println(Colors.TEXT_BLUE + "[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]" + Colors.TEXT_RESET + "\t\tInhoud: " + goods[i].toString());
+            out.println(Colors.TEXT_BLUE + "[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]" + Colors.TEXT_RESET + "\t\tInhoud: " + goods[i].toString());
         }
     }
 
 
     /**
+     * Methode die de elementen aankoppeld als een container is verplaatst
      * 
+     * @return void
      */
     @Override
-    public void connectCoolingElements() {
-        if (_elements_connected == true) {
-            System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVerkoelings elementen zijn al aangekoppeld!");
+    public void connectElements() 
+    {
+        if (super.getContainerType() == ContainerTypes.Cooling && this._elements_connected == true) 
+        {
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVerkoelings elementen zijn al aangekoppeld!");
+            return;
+        }
+        else if (super.getContainerType() == ContainerTypes.Heating && _elements_connected == true) 
+        {
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVerwarmings elementen zijn al aangekoppeld!");
             return;
         }
 
+        out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tElementen zijn aangekoppeld aan container: " + Colors.TEXT_PURPLE + super.getUUID() + " van type: " + super.getContainerType() + Colors.TEXT_RESET + "!");
         this._elements_connected = true;
     }
 
 
     /**
+     * Methode die de elementen afkoppeld als een container wordt verplaatst
      * 
+     * @return void
      */
     @Override
-    public void disconnectCoolingElements() {
-        if (_elements_connected == false) {
-            System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVerkoelings elementen zijn al afgekoppeld!");
+    public void disconnectElements() 
+    {
+        if (super.getContainerType() == ContainerTypes.Cooling && this._elements_connected == false) 
+        {
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVerkoelings elementen zijn al afgekoppeld!");
+            return;
+        }
+        else if (super.getContainerType() == ContainerTypes.Heating && this._elements_connected == false) 
+        {
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVerwarmings elementen zijn al afgekoppeld!");
             return;
         }
 
+        out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tElementen zijn afgekoppeld van container: " + Colors.TEXT_PURPLE + super.getUUID() + " van type: " + super.getContainerType() + Colors.TEXT_RESET + "!");
         this._elements_connected = false;
     }
 
 
     /**
+     * Methode die de connectie status teruggeeft
      * 
-     */
-    @Override
-    public void connectHeatingElements() {
-        if (_elements_connected == true) {
-            System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVerwarmings elementen zijn al aangekoppeld!");
-            return;
-        }
-
-        this._elements_connected = true;
-    }
-
-
-    /**
-     * 
-     */
-    @Override
-    public void disconnectHeatingElements() {
-        if (_elements_connected == false) {
-            System.out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVerwarmings elementen zijn al afgekoppeld!");
-            return;
-        }
-
-        this._elements_connected = false;
-    }
-
-
-    /**
-     * 
+     * @return boolean
      */
     @Override
     public boolean getConnectionState() {
