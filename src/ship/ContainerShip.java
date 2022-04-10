@@ -11,23 +11,24 @@ import container.ContainerTypes;
  * @author Nico van Ommen - 1030808
  * @since 04/03/2022
  */
-public class ContainerShip
+public class ContainerShip extends BaseShip
 {
     private final int MAX_CONTAINER_LIMIT = 100;
 
     private ArrayBlockingQueue<Container> _containers;
-    private String _name;
     private Random _random = new Random();
 
 
     /**
      * Constructor
+     * 
+     * @param name
      */
     public ContainerShip(String name)
     {
+        super(name);
         this.setContainerList(new ArrayBlockingQueue<Container>(MAX_CONTAINER_LIMIT));
         this.generateShipPayload(MAX_CONTAINER_LIMIT);
-        this.setName(name);
     }
     
     
@@ -88,28 +89,6 @@ public class ContainerShip
     public Container unload()
     {
         return this.getContainerList().remove();
-    }
-
-
-    /**
-     * Methode om de naam van het schip te zetten
-     * 
-     * @param name
-     */
-    private void setName(String name)
-    {
-        this._name = name;
-    }
-
-
-    /**
-     * Methode om de naam van het schip op te halen
-     * 
-     * @return String
-     */
-    public String getName()
-    {
-        return this._name;
     }
 
 

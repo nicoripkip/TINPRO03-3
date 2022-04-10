@@ -5,9 +5,8 @@ package ship;
  * @author Nico van Ommen - 1030808
  * @since 04/09/2022
  */
-public class TankerShip 
+public class TankerShip extends BaseShip
 {
-    private String _name;
     private int _capacity;
 
 
@@ -18,30 +17,8 @@ public class TankerShip
      */
     public TankerShip(String name)
     {
-        this.setShipName(name);
+        super(name);
         this._capacity = 10000;
-    }
-
-
-    /**
-     * Methode voor het zetten van de naam van het schip
-     * 
-     * @param name
-     */
-    public void setShipName(String name)
-    {
-        this._name = name;
-    }
-    
-
-    /**
-     * Methode voor het ophalen van de naam van het schip
-     * 
-     * @return String
-     */
-    public String getShipName()
-    {
-        return this._name;
     }
 
 
