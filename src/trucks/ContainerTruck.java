@@ -75,12 +75,6 @@ public class ContainerTruck extends BaseTruck
                     super.getDock().wait();
                 }
             }
-
-            // Checkt of er speciale containers staan en deze voorrrang kunnen krijgen
-            // if ((super.getDock().containsContainerType(ContainerTypes.Heating) || super.getDock().containsContainerType(ContainerTypes.Cooling)))
-            // {
-            //     super.getDock().wait(50);
-            // }
             
             this.load(super.getDock().unload());
             

@@ -70,6 +70,7 @@ public class Pump extends Thread
             if (this.getShip().isEmpty())
             {
                 out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getPumpName() + Colors.TEXT_RESET + " stopt met werken aangezien het ship leeg is!");
+                this.getShip().setDeparted(true);
                 this._thread_finished = true;
             }
 

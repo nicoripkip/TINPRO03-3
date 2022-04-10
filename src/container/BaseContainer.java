@@ -14,7 +14,6 @@ abstract class BaseContainer
     private UUID _uuid;
     private String _name;
     private int[] _dimensions;
-    private String _holder;
     private ContainerTypes _type;
     
 

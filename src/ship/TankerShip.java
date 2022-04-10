@@ -8,6 +8,7 @@ package ship;
 public class TankerShip extends BaseShip
 {
     private int _capacity;
+    private boolean _departed;
 
 
     /**
@@ -18,7 +19,8 @@ public class TankerShip extends BaseShip
     public TankerShip(String name)
     {
         super(name);
-        this._capacity = 10000;
+        this.setCapacity(10000);
+        this.setDeparted(false);
     }
 
 
@@ -30,7 +32,8 @@ public class TankerShip extends BaseShip
      */
     public void depleate(int liters)
     {
-        this._capacity -= liters;
+        int t = this.getCapacity();
+        this.setCapacity(t-=liters); 
     }
 
 
@@ -47,5 +50,49 @@ public class TankerShip extends BaseShip
         }
 
         return false;
+    }
+
+
+    /**
+     * Methode om de capacity te zetten voor het tankerschip
+     * 
+     * @param liters
+     */
+    public void setCapacity(int liters)
+    {
+        this._capacity = liters;
+    }
+
+
+    /**
+     * Methode voor het ophalen van de capacity van het schip
+     * 
+     * @return int
+     */
+    public int getCapacity()
+    {
+        return this._capacity;
+    }
+
+
+    /**
+     * Methode voor het zetten dat het schip kan vertrekken
+     * 
+     * @param departed
+     */
+    public void setDeparted(boolean departed)
+    {
+        this._departed = departed;
+    }
+
+
+    /**
+     * Methode om te kijken of het schip al vertrokken is
+     * 
+     * @return
+     */
+    public boolean getDeparted()
+    {
+        return this._departed;
     }
 }

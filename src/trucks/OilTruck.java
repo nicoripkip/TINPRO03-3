@@ -62,6 +62,11 @@ public class OilTruck extends BaseTruck {
                 this.getPump().wait();
             }
 
+            if (this.getPump().getShip().getDeparted()) 
+            {
+                this._thread_finish = true;
+            }
+
             int i;
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + Colors.TEXT_YELLOW + super.getTruckName() + Colors.TEXT_RESET + " gaat olie uit de pomp pompen!");
             for (i = 0; i < MAX_LITERS; i++)

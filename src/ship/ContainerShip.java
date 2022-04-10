@@ -3,7 +3,6 @@ package ship;
 
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
-
 import container.Container;
 import container.ContainerTypes;
 
