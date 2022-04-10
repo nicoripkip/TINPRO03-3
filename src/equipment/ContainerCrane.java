@@ -1,4 +1,4 @@
-package crane;
+package equipment;
 
 
 import container.Container;
@@ -94,11 +94,6 @@ public class ContainerCrane extends BaseCrane
                 this._thread_finish = true;
                 super.getDock().setShipDeparted(this._thread_finish);
                 return;
-            }
-            while (super.getDock().getPermit().availablePermits() == 0) 
-            {
-                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " is aan het wachten tot hij weer containers mag pakken!");
-                this.getContainerShip().wait();
             }
 
             this._previous_time = super.getTiming() / 2;

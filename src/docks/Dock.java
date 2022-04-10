@@ -15,10 +15,8 @@ import container.ContainerTypes;
 public class Dock
 {
     private static final int MAX_CONTAINERS = 5;
-    private static final int MAX_CRANE_PERMITS = 1;
 
     private ArrayBlockingQueue<Container> _containers;
-    private Semaphore _permit;
     private boolean _ship_departed;
     
     
@@ -28,7 +26,6 @@ public class Dock
     public Dock()
     {
         this.setContainerStack(new ArrayBlockingQueue<Container>(MAX_CONTAINERS));
-        this.setPermit(new Semaphore(MAX_CRANE_PERMITS));
     }
 
 
@@ -83,28 +80,6 @@ public class Dock
     public Container unload()
     {
         return this.getContainers().remove();
-    }
-
-
-    /**
-     * Methode voor het zetten van een nieuwe permit
-     * 
-     * @param permit
-     */
-    private void setPermit(Semaphore permit)
-    {
-        this._permit = permit;
-    }
-
-
-    /**
-     * Methode voor het ophalen 
-     * 
-     * @return Semaphore
-     */
-    public Semaphore getPermit()
-    {
-        return this._permit;
     }
 
 

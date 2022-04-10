@@ -1,4 +1,4 @@
-package crane;
+package equipment;
 
 import docks.Dock;
 import java.util.Random;

@@ -42,7 +42,7 @@ abstract class BaseTruck extends Thread
      * 
      * @param name
      */
-    protected void setTruckName(String name)
+    public void setTruckName(String name)
     {
         this._name = name;
     }
@@ -64,7 +64,7 @@ abstract class BaseTruck extends Thread
      * 
      * @param speed
      */
-    protected void setTruckSpeed(int speed)
+    public void setTruckSpeed(int speed)
     {
         this._speed = speed;
     }
@@ -86,7 +86,7 @@ abstract class BaseTruck extends Thread
      * 
      * @param dock
      */
-    private void setDock(Dock dock)
+    public void setDock(Dock dock)
     {
         this._dock = dock;
     }
@@ -97,7 +97,7 @@ abstract class BaseTruck extends Thread
      * 
      * @return Dock
      */
-    protected Dock getDock()
+    public Dock getDock()
     {
         return this._dock;
     }
