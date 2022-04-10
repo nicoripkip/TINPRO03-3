@@ -2,9 +2,6 @@ package trucks;
 
 
 import java.util.Random;
-
-import javax.xml.stream.FactoryConfigurationError;
-
 import docks.Dock;
 
 

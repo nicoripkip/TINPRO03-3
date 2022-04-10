@@ -2,8 +2,6 @@ package docks;
 
 
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Semaphore;
-
 import container.Container;
 import container.ContainerTypes;
 

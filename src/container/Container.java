@@ -101,7 +101,8 @@ public class Container extends BaseContainer implements SpecialContainerInterfac
      * @return boolean
      */
     @Override
-    public boolean getConnectionState() {
+    public boolean getConnectionState() 
+    {
         return this._elements_connected;
     }
 }

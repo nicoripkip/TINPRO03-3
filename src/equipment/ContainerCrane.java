@@ -74,7 +74,7 @@ public class ContainerCrane extends BaseCrane
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + (this._previous_time * 2) + Colors.TEXT_RESET + "]\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " heeft nu container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " op de kade gezet!");
 
             super.getDock().notify();
-            Thread.sleep(3000);
+            Thread.sleep(this._previous_time);
         }
     }
 
@@ -96,12 +96,13 @@ public class ContainerCrane extends BaseCrane
                 return;
             }
 
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " gaat nu een container uit het schip: " + this.getContainerShip().getShipName() + " halen!");
             this._previous_time = super.getTiming() / 2;
             this.setContainer(this.getContainerShip().unload());
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " haalt nu container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " uit schip: " + this.getContainerShip().getShipName() + " gehaalt!");
             
             this.getContainerShip().notify();
-            Thread.sleep(3000);
+            Thread.sleep(this._previous_time);
         }
     }
 
