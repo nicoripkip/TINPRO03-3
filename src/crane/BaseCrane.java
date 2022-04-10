@@ -1,6 +1,7 @@
 package crane;
 
 import docks.Dock;
+import java.util.Random;
 
 /**
  * @author Nico van Ommen - 1030808
@@ -11,6 +12,7 @@ abstract class BaseCrane extends Thread implements Runnable
     private String _name;
     private int _speed;
     private Dock _dock;
+    private Random _random;
 
 
     /**
@@ -24,6 +26,7 @@ abstract class BaseCrane extends Thread implements Runnable
         this.setCraneName(name);
         this.setCraneSpeed(speed);
         this.setDock(dock);
+        this._random = new Random();
     }
 
 
@@ -90,5 +93,29 @@ abstract class BaseCrane extends Thread implements Runnable
     public Dock getDock()
     {
         return this._dock;
+    }
+
+
+    /**
+     * Methode voor het genereren van een tijd met behulp van de normaal verdeleing
+     * 
+     * @return
+     */
+    protected int getTiming()
+    {
+        int t = (int)Math.round((double)this._random.nextGaussian()*1700+3000);
+
+        if (t <= 1000) 
+        {
+            return 1000;
+        } 
+        else if (t >= 6000)
+        {
+            return 6000;
+        } 
+        else
+        {
+            return t;
+        }
     }
 }

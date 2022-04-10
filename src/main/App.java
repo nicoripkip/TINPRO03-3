@@ -2,6 +2,9 @@ package main;
 
 
 import trucks.ContainerTruck;
+
+import java.util.Random;
+
 import crane.ContainerCrane;
 import docks.Dock;
 import ship.ContainerShip;

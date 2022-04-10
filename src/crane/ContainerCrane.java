@@ -17,6 +17,7 @@ public class ContainerCrane extends BaseCrane
     private Container _container;
     private ContainerShip _ship;
     private boolean _thread_finish = false;
+    private int _previous_time = 0;
     
 
     /**
@@ -67,14 +68,13 @@ public class ContainerCrane extends BaseCrane
             {
                 out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " is aan het wachten tot er weer ruimte is op de dock!");
                 super.getDock().wait();
-            }        
+            }
             
             super.getDock().load(this.getContainer());
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " heeft nu container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " op de kade gezet!");
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + (this._previous_time * 2) + Colors.TEXT_RESET + "]\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " heeft nu container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " op de kade gezet!");
 
             super.getDock().notify();
-            super.getDock().getPermit().release();
-            Thread.sleep(50);
+            Thread.sleep(3000);
         }
     }
 
@@ -101,11 +101,12 @@ public class ContainerCrane extends BaseCrane
                 this.getContainerShip().wait();
             }
 
+            this._previous_time = super.getTiming() / 2;
             this.setContainer(this.getContainerShip().unload());
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " haalt nu container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " uit schip: " + this.getContainerShip().getName() + " gehaalt!");
             
             this.getContainerShip().notify();
-            Thread.sleep(50);
+            Thread.sleep(3000);
         }
     }
 

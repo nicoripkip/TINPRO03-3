@@ -72,7 +72,7 @@ public class ContainerTruck extends BaseTruck
                 } 
                 else 
                 {
-                    super.getDock().wait(5);
+                    super.getDock().wait();
                 }
             }
 
@@ -83,23 +83,24 @@ public class ContainerTruck extends BaseTruck
             // }
             
             this.load(super.getDock().unload());
-
+            
             // Checkt of de container type overeen komt met het type vrachtwagen wat deze weg mag rijden
             if (this.getContainer().getContainerType() != ContainerTypes.Normal) 
             {
-                out.println("vrachtwagen test");
                 this.getContainer().connectElements();
             }
 
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tContainer: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + " van type: " + this.getContainer().getContainerType() + Colors.TEXT_RESET + " is geladen op vrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + "!");
             
+            int t = super.getTiming();
+
             super.getDock().notify();
-            Thread.sleep(1000);
+            Thread.sleep(super.getTiming());
 
             // Als de vrachtwagen de container heeft weggereden, verwijder de container uit het model
             if (this.getContainer() != null) 
             {
-                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + " heeft container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " weggereden!");
+                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + t + Colors.TEXT_RESET + "]\tVrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + " heeft container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " weggereden!");
                 this.unload();
             }
         }

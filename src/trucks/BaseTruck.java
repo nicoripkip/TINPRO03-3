@@ -1,6 +1,10 @@
 package trucks;
 
 
+import java.util.Random;
+
+import javax.xml.stream.FactoryConfigurationError;
+
 import docks.Dock;
 
 
@@ -14,6 +18,7 @@ abstract class BaseTruck extends Thread
     private int _speed;
     private Dock _dock;
     protected boolean _thread_finish = false;
+    private Random _random;
 
 
     /**
@@ -28,6 +33,7 @@ abstract class BaseTruck extends Thread
         this.setTruckName(name);
         this.setTruckSpeed(speed);
         this.setDock(dock);
+        this._random = new Random();
     }
 
 
@@ -94,5 +100,27 @@ abstract class BaseTruck extends Thread
     protected Dock getDock()
     {
         return this._dock;
+    }
+
+
+    /**
+     * Methode voor het genereren van een tijd met behulp van de normaal verdeleing
+     * 
+     * @return
+     */
+    protected int getTiming()
+    {
+        int t = (int)Math.round((double)this._random.nextGaussian()*2000+4000);
+
+        if (t <= 1000) 
+        {
+            return 1000; 
+        } 
+        else if (t >= 6000)
+        {
+            return 6000;
+        } 
+
+        return t;
     }
 }
