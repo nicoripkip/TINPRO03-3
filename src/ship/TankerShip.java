@@ -19,7 +19,7 @@ public class TankerShip extends BaseShip
     public TankerShip(String name)
     {
         super(name);
-        this.setCapacity(10000);
+        this.setCapacity(2000);
         this.setDeparted(false);
     }
 
