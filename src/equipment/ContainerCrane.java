@@ -2,6 +2,7 @@ package equipment;
 
 
 import container.Container;
+import container.ContainerTypes;
 import docks.Dock;
 import ship.ContainerShip;
 import main.Colors;
@@ -69,7 +70,8 @@ public class ContainerCrane extends BaseCrane
                 out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " is aan het wachten tot er weer ruimte is op de dock!");
                 super.getDock().wait();
             }
-            
+
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " gaat nu container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " op de kade zetten!");
             super.getDock().load(this.getContainer());
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + (this._previous_time * 2) + Colors.TEXT_RESET + "]\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " heeft nu container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " op de kade gezet!");
 
@@ -99,6 +101,12 @@ public class ContainerCrane extends BaseCrane
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " gaat nu een container uit het schip: " + this.getContainerShip().getShipName() + " halen!");
             this._previous_time = super.getTiming() / 2;
             this.setContainer(this.getContainerShip().unload());
+
+            if (this.getContainer().getContainerType() == ContainerTypes.Heating || this.getContainer().getContainerType() == ContainerTypes.Cooling) 
+            {
+                this.getContainer().disconnectElements();
+            }
+
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " haalt nu container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " uit schip: " + this.getContainerShip().getShipName() + " gehaalt!");
             
             this.getContainerShip().notify();
