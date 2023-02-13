@@ -1,8 +1,10 @@
 package equipment;
 
 
+import container.BaseContainer;
 import container.Container;
-import container.ContainerTypes;
+import container.CooledContainer;
+import container.HeatedContainer;
 import docks.Dock;
 import ship.ContainerShip;
 import main.Colors;
@@ -15,7 +17,7 @@ import static java.lang.System.out;
  */
 public class ContainerCrane extends BaseCrane
 {
-    private Container _container;
+    private BaseContainer _container;
     private ContainerShip _ship;
     private boolean _thread_finish = false;
     private int _previous_time = 0;
@@ -93,7 +95,7 @@ public class ContainerCrane extends BaseCrane
             this._previous_time = super.getTiming() / 2;
             this.setContainer(this.getContainerShip().unload());
 
-            if (this.getContainer().getContainerType() == ContainerTypes.Heating || this.getContainer().getContainerType() == ContainerTypes.Cooling) {
+            if (this.getContainer() instanceof HeatedContainer || this.getContainer() instanceof CooledContainer) {
                 this.getContainer().disconnectElements();
             }
 
@@ -110,7 +112,7 @@ public class ContainerCrane extends BaseCrane
      * 
      * @param container
      */
-    private void setContainer(Container container)
+    private void setContainer(BaseContainer container)
     {
         this._container = container;
     }
@@ -121,7 +123,7 @@ public class ContainerCrane extends BaseCrane
      * 
      * @return
      */
-    private Container getContainer()
+    private BaseContainer getContainer()
     {
         return this._container;
     }

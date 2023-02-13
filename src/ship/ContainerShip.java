@@ -4,11 +4,11 @@ package ship;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
-import java.util.concurrent.ArrayBlockingQueue;
-
 import container.BaseContainer;
 import container.Container;
-import container.ContainerTypes;
+import container.CooledContainer;
+import container.HeatedContainer;
+
 
 /**
  * @author Nico van Ommen - 1030808
@@ -16,11 +16,10 @@ import container.ContainerTypes;
  */
 public class ContainerShip extends BaseShip
 {
-    private final int MAX_CONTAINER_LIMIT = 100;
+    private final int MAX_CONTAINERS = 100;
 
+    
     private List<BaseContainer> _containers;
-
-    // private ArrayBlockingQueue<Container> _containers;
     private Random _random = new Random();
 
 
@@ -32,8 +31,8 @@ public class ContainerShip extends BaseShip
     public ContainerShip(String name)
     {
         super(name);
-        this.setContainerList(new ArrayBlockingQueue<Container>(MAX_CONTAINER_LIMIT));
-        this.generateShipPayload(MAX_CONTAINER_LIMIT);
+        this.setContainerList(new List<BaseContainer>(MAX_CONTAINERS));
+        this.generateShipPayload(MAX_CONTAINERS);
     }
     
     
@@ -45,11 +44,20 @@ public class ContainerShip extends BaseShip
     private void generateShipPayload(int size)
     {
         int i;
-
         int dimensions[] = {20, 20, 20};
 
         for (i = 0; i < size; i++) {
-            this.getContainerList().add(new Container("Container"+i, dimensions, this.getRandomcontainerType(3)));
+            switch (this._random.nextInt(3)) {
+                case 0:
+                    this.getContainerList().add(new Container("Container"+i, dimensions));
+                    break;
+                case 1:
+                    this.getContainerList().add(new HeatedContainer("Container"+i, dimensions));
+                    break;
+                case 2:
+                    this.getContainerList().add(new CooledContainer("Container"+i, dimensions));
+                    break;
+            }
         }
     }
 
@@ -97,25 +105,5 @@ public class ContainerShip extends BaseShip
         }
 
         return this.getContainerList().remove(this.getContainerList().size()-1);
-    }
-
-
-    /**
-     * Methode voor het random genereren van de container type
-     * 
-     * @return String
-     */
-    private ContainerTypes getRandomcontainerType(int max)
-    {
-        switch (this._random.nextInt(max)) {
-            case 0:
-                return ContainerTypes.Normal;
-            case 1:
-                return ContainerTypes.Heating;
-            case 2:
-                return ContainerTypes.Cooling;
-        }
-
-        return ContainerTypes.Normal;
     }
 }

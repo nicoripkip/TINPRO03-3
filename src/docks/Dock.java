@@ -1,9 +1,10 @@
 package docks;
 
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.List;
 import container.Container;
-import container.ContainerTypes;
+import container.HeatedContainer;
+import container.BaseContainer;
 
 
 /**
@@ -12,9 +13,9 @@ import container.ContainerTypes;
  */
 public class Dock
 {
-    private static final int MAX_CONTAINERS = 5;
+    private final int MAX_CONTAINERS = 5;
 
-    private ArrayBlockingQueue<Container> _containers;
+    private List<BaseContainer> _containers;
     private boolean _ship_departed;
     
     
@@ -23,7 +24,7 @@ public class Dock
      */
     public Dock()
     {
-        this.setContainerStack(new ArrayBlockingQueue<Container>(MAX_CONTAINERS));
+        this.setContainerStack(new List<BaseContainer>(MAX_CONTAINERS));
     }
 
 
@@ -42,7 +43,7 @@ public class Dock
      * 
      * @param containers
      */
-    private void setContainerStack(ArrayBlockingQueue<Container> containers)
+    private void setContainerStack(List<BaseContainer> containers)
     {
         this._containers = containers;
     }
@@ -53,7 +54,7 @@ public class Dock
      * 
      * @return ArrayBlockingQueue<Container>
      */
-    private ArrayBlockingQueue<Container> getContainers()
+    private List<BaseContainer> getContainers()
     {
         return this._containers;
     }
@@ -64,7 +65,7 @@ public class Dock
      * 
      * @param container
      */
-    public void load(Container container)
+    public void load(BaseContainer container)
     {
         this.getContainers().add(container);
     }
@@ -75,9 +76,9 @@ public class Dock
      * 
      * @return Container
      */
-    public Container unload()
+    public BaseContainer unload()
     {
-        return this.getContainers().remove();
+        return this.getContainers().remove(this.getContainers().size()-1);
     }
 
 
@@ -109,13 +110,13 @@ public class Dock
      * @param type
      * @return
      */
-    public boolean containsContainerType(ContainerTypes type)
+    public boolean containsContainerType()
     {
         int i = 0;
 
-        for (Container c : this.getContainers()) 
+        for (BaseContainer c : this.getContainers()) 
         {
-            if (c.getContainerType() == type)
+            if (c instanceof HeatedContainer)
             {
                 i++;
             }

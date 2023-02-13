@@ -1,8 +1,10 @@
 package trucks;
 
 
+import container.BaseContainer;
 import container.Container;
-import container.ContainerTypes;
+import container.CooledContainer;
+import container.HeatedContainer;
 import docks.Dock;
 import main.Colors;
 import static java.lang.System.out;
@@ -14,7 +16,7 @@ import static java.lang.System.out;
  */
 public class ContainerTruck extends BaseTruck 
 {
-    private Container _container;
+    private BaseContainer _container;
    
    
     /**
@@ -71,11 +73,11 @@ public class ContainerTruck extends BaseTruck
             this.load(super.getDock().unload());
             
             // Checkt of de container type overeen komt met het type vrachtwagen wat deze weg mag rijden
-            if (this.getContainer().getContainerType() != ContainerTypes.Normal) {
+            if (this.getContainer() instanceof HeatedContainer || this.getContainer() instanceof CooledContainer) {
                 this.getContainer().connectElements();
             }
 
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tContainer: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + " van type: " + this.getContainer().getContainerType() + Colors.TEXT_RESET + " is geladen op vrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + "!");
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tContainer: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " is geladen op vrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + "!");
             
             int t = super.getTiming();
 
@@ -96,7 +98,7 @@ public class ContainerTruck extends BaseTruck
      * 
      * @param container
      */
-    public void load(Container container)
+    public void load(BaseContainer container)
     {
         this._container = container;
     }
@@ -107,9 +109,9 @@ public class ContainerTruck extends BaseTruck
      * 
      * @return Container
      */
-    public Container unload()
+    public BaseContainer unload()
     {
-        Container temp = this._container;
+        BaseContainer temp = this._container;
         this._container = null;
         return temp;
     }
@@ -120,7 +122,7 @@ public class ContainerTruck extends BaseTruck
      * 
      * @return Container
      */
-    private Container getContainer()
+    private BaseContainer getContainer()
     {
         return this._container;
     }
