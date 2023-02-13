@@ -1,21 +1,24 @@
 package container;
 
 
-import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
 
 
 /**
  * @author Nico van Ommen - 1030808
  * @since 03/29/2022
  */
-abstract class BaseContainer 
+public abstract class BaseContainer 
 {
+    private final int TOTAL_SEMAPHORE_PERMITS = 1;
+
+
     private UUID _uuid;
     private String _name;
     private int[] _dimensions;
-    private ContainerTypes _type;
-    
+    private Semaphore _semaphore; 
+
 
     /**
      * Constructor
@@ -24,11 +27,33 @@ abstract class BaseContainer
      * @param dimensions
      * @param type
      */
-    public BaseContainer(String name, int[] dimensions, ContainerTypes type)
+    public BaseContainer(String name, int[] dimensions)
     {
-        this._name = name;
-        this._dimensions = dimensions;
-        this.setContainerType(type);
+        this.setName(name);
+        this.setDimensions(dimensions);
+        this.setSemaphore(new Semaphore(TOTAL_SEMAPHORE_PERMITS));
+    }
+
+
+    /**
+     * Methode voor het laden van de container om ervoor te zorgen dat er maar 1 container per keer gepakt kan worden
+     * 
+     * @throws InterruptedException
+     */
+    public void load() throws InterruptedException
+    {
+        this.getSemaphore().acquire();
+    }
+
+
+    /**
+     * Methode voor het ontkoppelen van een container om ervoor te zorgen dat maar 1 container losgekoppeld wordt
+     * 
+     * @throws InterruptedException
+     */
+    public void unload() throws InterruptedException
+    {
+        this.getSemaphore().release();
     }
 
 
@@ -53,23 +78,61 @@ abstract class BaseContainer
 
 
     /**
-     * Methode voor het zetten van de container type
+     * Methode voor het zetten van de naam van de container
      * 
-     * @param type
+     * @param name
      */
-    private void setContainerType(ContainerTypes type)
+    public void setName(String name)
     {
-        this._type = type;
+        this._name = name;
     }
 
 
     /**
-     * Methode voor het ophalen van de container type
+     * Methode voor het zetten van de dimensies van de container
      * 
-     * @return String
+     * @param dimensions
      */
-    public ContainerTypes getContainerType()
+    public void setDimensions(int[] dimensions)
     {
-        return this._type;
+        this._dimensions = dimensions;
     }
+
+
+    /**
+     * Methode voor het zetten van een semaphore
+     * 
+     * @param semaphore
+     */
+    public void setSemaphore(Semaphore semaphore)
+    {
+        this._semaphore = semaphore;
+    }
+
+
+    public String getName()
+    {
+        return this._name;
+    }
+
+
+    public int[] getDimensions()
+    {
+        return this._dimensions;
+    }
+
+
+    /**
+     * Methode voor het ophalen van een semaphore
+     * 
+     * @return Semaphore
+     */
+    public Semaphore getSemaphore()
+    {
+        return this._semaphore;
+    }
+
+
+    public abstract void connectElements();
+    public abstract void disconnectElements();
 }

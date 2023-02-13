@@ -38,14 +38,10 @@ public class ContainerTruck extends BaseTruck
     @Override
     public void run()
     {
-        while (!this._thread_finish)
-        {
-            try
-            {
+        while (!this._thread_finish) {
+            try {
                 this.consume();
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 System.out.println("["+Colors.TEXT_RED + "error" + Colors.TEXT_RESET + "]\t\tError: " + e);
             }
         }
@@ -61,17 +57,13 @@ public class ContainerTruck extends BaseTruck
     {
         synchronized (super.getDock())
         {
-            while (super.getDock().getContainerLength() == 0) 
-            {
+            while (super.getDock().getContainerLength() == 0) {
                 out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + Colors.TEXT_YELLOW  + super.getTruckName() + Colors.TEXT_RESET +  " is aan het wachten tot er weer containers beschikbaar zijn!");
                 
-                if (super.getDock().getShipDeparted()) 
-                {
+                if (super.getDock().getShipDeparted()) {
                     super._thread_finish = true;
                     return;
-                } 
-                else 
-                {
+                } else {
                     super.getDock().wait();
                 }
             }
@@ -79,8 +71,7 @@ public class ContainerTruck extends BaseTruck
             this.load(super.getDock().unload());
             
             // Checkt of de container type overeen komt met het type vrachtwagen wat deze weg mag rijden
-            if (this.getContainer().getContainerType() != ContainerTypes.Normal) 
-            {
+            if (this.getContainer().getContainerType() != ContainerTypes.Normal) {
                 this.getContainer().connectElements();
             }
 
@@ -92,8 +83,7 @@ public class ContainerTruck extends BaseTruck
             Thread.sleep(super.getTiming());
 
             // Als de vrachtwagen de container heeft weggereden, verwijder de container uit het model
-            if (this.getContainer() != null) 
-            {
+            if (this.getContainer() != null) {
                 out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + t + Colors.TEXT_RESET + "]\tVrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + " heeft container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " weggereden!");
                 this.unload();
             }

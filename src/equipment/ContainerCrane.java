@@ -30,7 +30,6 @@ public class ContainerCrane extends BaseCrane
     public ContainerCrane(String name, int speed, Dock dock, ContainerShip ship)
     {
         super(name, speed, dock);
-
         this.setContainerShip(ship);
     }
 
@@ -41,15 +40,11 @@ public class ContainerCrane extends BaseCrane
     @Override
     public void run()
     {
-        while (!this._thread_finish) 
-        {
-            try 
-            {
+        while (!this._thread_finish) {
+            try {
                 this.consume();
                 this.produce();
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 out.println("["+Colors.TEXT_RED + "error" + Colors.TEXT_RESET + "]\t\tError: " + e);
             }
         }
@@ -63,10 +58,8 @@ public class ContainerCrane extends BaseCrane
      */
     public void produce() throws InterruptedException
     {
-        synchronized (super.getDock()) 
-        {
-            while (super.getDock().getContainerLength() >= 5) 
-            {
+        synchronized (super.getDock()) {
+            while (super.getDock().getContainerLength() >= 5) {
                 out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " is aan het wachten tot er weer ruimte is op de dock!");
                 super.getDock().wait();
             }
@@ -88,10 +81,8 @@ public class ContainerCrane extends BaseCrane
      */
     public void consume() throws InterruptedException
     {
-        synchronized (this.getContainerShip()) 
-        {
-            while (this.getContainerShip().getContainerCount() == 0) 
-            {
+        synchronized (this.getContainerShip()) {
+            while (this.getContainerShip().getContainerCount() == 0) {
                 out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " is aan het wachten tot er weer een nieuw schip aankomt!");
                 this._thread_finish = true;
                 super.getDock().setShipDeparted(this._thread_finish);
@@ -102,8 +93,7 @@ public class ContainerCrane extends BaseCrane
             this._previous_time = super.getTiming() / 2;
             this.setContainer(this.getContainerShip().unload());
 
-            if (this.getContainer().getContainerType() == ContainerTypes.Heating || this.getContainer().getContainerType() == ContainerTypes.Cooling) 
-            {
+            if (this.getContainer().getContainerType() == ContainerTypes.Heating || this.getContainer().getContainerType() == ContainerTypes.Cooling) {
                 this.getContainer().disconnectElements();
             }
 

@@ -1,8 +1,12 @@
 package ship;
 
 
+import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
+
+import container.BaseContainer;
 import container.Container;
 import container.ContainerTypes;
 
@@ -14,7 +18,9 @@ public class ContainerShip extends BaseShip
 {
     private final int MAX_CONTAINER_LIMIT = 100;
 
-    private ArrayBlockingQueue<Container> _containers;
+    private List<BaseContainer> _containers;
+
+    // private ArrayBlockingQueue<Container> _containers;
     private Random _random = new Random();
 
 
@@ -42,8 +48,7 @@ public class ContainerShip extends BaseShip
 
         int dimensions[] = {20, 20, 20};
 
-        for (i = 0; i < size; i++)
-        {
+        for (i = 0; i < size; i++) {
             this.getContainerList().add(new Container("Container"+i, dimensions, this.getRandomcontainerType(3)));
         }
     }
@@ -54,7 +59,7 @@ public class ContainerShip extends BaseShip
      * 
      * @param containers
      */
-    private void setContainerList(ArrayBlockingQueue<Container> containers)
+    private void setContainerList(List<BaseContainer> containers)
     {
         this._containers = containers;
     }
@@ -65,7 +70,7 @@ public class ContainerShip extends BaseShip
      * 
      * @return ArrayList<Container>
      */
-    public ArrayBlockingQueue<Container> getContainerList()
+    public List<BaseContainer> getContainerList()
     {
         return this._containers;
     }
@@ -85,9 +90,13 @@ public class ContainerShip extends BaseShip
     /**
      * Methode voor het uitladen van het schip
      */
-    public Container unload()
+    public BaseContainer unload()
     {
-        return this.getContainerList().remove();
+        if (this.getContainerList().isEmpty()) {
+            return null;
+        }
+
+        return this.getContainerList().remove(this.getContainerList().size()-1);
     }
 
 
@@ -98,8 +107,7 @@ public class ContainerShip extends BaseShip
      */
     private ContainerTypes getRandomcontainerType(int max)
     {
-        switch (this._random.nextInt(max)) 
-        {
+        switch (this._random.nextInt(max)) {
             case 0:
                 return ContainerTypes.Normal;
             case 1:
