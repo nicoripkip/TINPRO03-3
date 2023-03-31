@@ -1,6 +1,7 @@
 package docks;
 
 
+import java.util.LinkedList;
 import java.util.List;
 import container.Container;
 import container.HeatedContainer;
@@ -17,6 +18,7 @@ public class Dock
 
     private List<BaseContainer> _containers;
     private boolean _ship_departed;
+    private int _index;
     
     
     /**
@@ -24,7 +26,7 @@ public class Dock
      */
     public Dock()
     {
-        this.setContainerStack(new List<BaseContainer>(MAX_CONTAINERS));
+        this.setContainerList(new LinkedList<BaseContainer>());
     }
 
 
@@ -34,7 +36,7 @@ public class Dock
      */
     public int getContainerLength()
     {
-        return this.getContainers().size();
+        return this.getContainerList().size();
     }
 
 
@@ -43,7 +45,7 @@ public class Dock
      * 
      * @param containers
      */
-    private void setContainerStack(List<BaseContainer> containers)
+    private void setContainerList(List<BaseContainer> containers)
     {
         this._containers = containers;
     }
@@ -54,9 +56,21 @@ public class Dock
      * 
      * @return ArrayBlockingQueue<Container>
      */
-    private List<BaseContainer> getContainers()
+    private List<BaseContainer> getContainerList()
     {
         return this._containers;
+    }
+
+
+    private int checkIndex()
+    {
+        this._index = 0;
+
+        if (this.getContainerList().get(this._index).getSemaphore().availablePermits() != 0) {
+            return this._index;
+        }
+
+        return this._index++;
     }
 
 
@@ -67,7 +81,7 @@ public class Dock
      */
     public void load(BaseContainer container)
     {
-        this.getContainers().add(container);
+        this.getContainerList().add(container);
     }
 
 
@@ -78,7 +92,9 @@ public class Dock
      */
     public BaseContainer unload()
     {
-        return this.getContainers().remove(this.getContainers().size()-1);
+        BaseContainer temp = this.getContainerList().get(this.checkIndex());
+        this.getContainerList().remove(temp);
+        return temp;
     }
 
 
@@ -114,7 +130,7 @@ public class Dock
     {
         int i = 0;
 
-        for (BaseContainer c : this.getContainers()) 
+        for (BaseContainer c : this.getContainerList()) 
         {
             if (c instanceof HeatedContainer)
             {

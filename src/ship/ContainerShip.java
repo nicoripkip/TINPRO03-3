@@ -1,6 +1,7 @@
 package ship;
 
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -21,6 +22,7 @@ public class ContainerShip extends BaseShip
     
     private List<BaseContainer> _containers;
     private Random _random = new Random();
+    private int _index;
 
 
     /**
@@ -31,7 +33,7 @@ public class ContainerShip extends BaseShip
     public ContainerShip(String name)
     {
         super(name);
-        this.setContainerList(new List<BaseContainer>(MAX_CONTAINERS));
+        this.setContainerList(new LinkedList<BaseContainer>());
         this.generateShipPayload(MAX_CONTAINERS);
     }
     
@@ -84,6 +86,18 @@ public class ContainerShip extends BaseShip
     }
 
 
+    private int checkIndex()
+    {
+        this._index = 0;
+
+        if (this.getContainerList().get(this._index).getSemaphore().availablePermits() != 0) {
+            return this._index;
+        }
+
+        return this._index++;
+    }
+
+
     /**
      * Methode om het aantal containers op het 
      * 
@@ -104,6 +118,9 @@ public class ContainerShip extends BaseShip
             return null;
         }
 
-        return this.getContainerList().remove(this.getContainerList().size()-1);
+        BaseContainer temp = this.getContainerList().get(this.checkIndex());
+        this.getContainerList().remove(temp);
+
+        return temp;
     }
 }
