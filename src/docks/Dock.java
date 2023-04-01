@@ -3,7 +3,6 @@ package docks;
 
 import java.util.LinkedList;
 import java.util.List;
-import container.Container;
 import container.HeatedContainer;
 import container.BaseContainer;
 
@@ -56,12 +55,17 @@ public class Dock
      * 
      * @return ArrayBlockingQueue<Container>
      */
-    private List<BaseContainer> getContainerList()
+    public List<BaseContainer> getContainerList()
     {
         return this._containers;
     }
 
 
+    /**
+     * Methode voor het controleren of de container op de index in questie gepakt kan worden
+     * 
+     * @return
+     */
     private int checkIndex()
     {
         this._index = 0;
@@ -70,7 +74,13 @@ public class Dock
             return this._index;
         }
 
-        return this._index++;
+        this._index++;
+
+        if (this._index > this.getContainerList().size()) {
+            return -1;
+        } else {
+            return this._index;
+        }
     }
 
 
@@ -78,9 +88,11 @@ public class Dock
      * Methode voor het laden van de dock
      * 
      * @param container
+     * @throws InterruptedException
      */
-    public void load(BaseContainer container)
+    public synchronized void load(BaseContainer container) throws InterruptedException
     {
+        container.getSemaphore().release();
         this.getContainerList().add(container);
     }
 
@@ -89,11 +101,24 @@ public class Dock
      * Methode voor het ontladen van de docks
      * 
      * @return Container
+     * @throws InterruptedException
      */
-    public BaseContainer unload()
+    public BaseContainer unload() throws InterruptedException
     {
-        BaseContainer temp = this.getContainerList().get(this.checkIndex());
+        if (this.getContainerList().isEmpty()) {
+            return null;
+        }
+
+        int index = this.checkIndex();
+
+        if (index == -1) {
+            return null;
+        }
+
+        this.getContainerList().get(index).getSemaphore().acquire();
+        BaseContainer temp = this.getContainerList().get(index);
         this.getContainerList().remove(temp);
+
         return temp;
     }
 

@@ -3,7 +3,6 @@ package ship;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Random;
 import container.BaseContainer;
 import container.Container;
@@ -86,6 +85,11 @@ public class ContainerShip extends BaseShip
     }
 
 
+    /**
+     * Methode voor het controleren of de container op de index in questie gepakt kan worden
+     * 
+     * @return
+     */
     private int checkIndex()
     {
         this._index = 0;
@@ -94,7 +98,13 @@ public class ContainerShip extends BaseShip
             return this._index;
         }
 
-        return this._index++;
+        this._index++;
+
+        if (this._index > this.getContainerList().size()) {
+            return -1;
+        } else {
+            return this._index;
+        }
     }
 
 
@@ -111,14 +121,22 @@ public class ContainerShip extends BaseShip
 
     /**
      * Methode voor het uitladen van het schip
+     * @throws InterruptedException
      */
-    public BaseContainer unload()
+    public synchronized BaseContainer unload() throws InterruptedException
     {
         if (this.getContainerList().isEmpty()) {
             return null;
         }
 
-        BaseContainer temp = this.getContainerList().get(this.checkIndex());
+        int index = this.checkIndex();
+
+        if (index == -1) {
+            return null;
+        }
+
+        this.getContainerList().get(index).getSemaphore().acquire();
+        BaseContainer temp = this.getContainerList().get(index);
         this.getContainerList().remove(temp);
 
         return temp;

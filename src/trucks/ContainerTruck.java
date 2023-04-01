@@ -56,14 +56,17 @@ public class ContainerTruck extends BaseTruck
      */
     public void consume() throws InterruptedException
     {
-        while (super.getDock().getContainerLength() == 0) {
+        int t = super.getTiming();
+        Thread.sleep(super.getTiming());
+
+        if (super.getDock().getContainerLength() == 0) {
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + Colors.TEXT_YELLOW  + super.getTruckName() + Colors.TEXT_RESET +  " is aan het wachten tot er weer containers beschikbaar zijn!");
             
             if (super.getDock().getShipDeparted()) {
                 super._thread_finish = true;
                 return;
             } else {
-                super.getDock().wait();
+                return;
             }
         }
         
@@ -76,11 +79,6 @@ public class ContainerTruck extends BaseTruck
 
         out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tContainer: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " is geladen op vrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + "!");
         
-        int t = super.getTiming();
-
-        super.getDock().notify();
-        Thread.sleep(super.getTiming());
-
         // Als de vrachtwagen de container heeft weggereden, verwijder de container uit het model
         if (this.getContainer() != null) {
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + t + Colors.TEXT_RESET + "]\tVrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + " heeft container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " weggereden!");
@@ -94,7 +92,7 @@ public class ContainerTruck extends BaseTruck
      * 
      * @param container
      */
-    public void load(BaseContainer container)
+    public void load(BaseContainer container) 
     {
         this._container = container;
     }
@@ -105,10 +103,11 @@ public class ContainerTruck extends BaseTruck
      * 
      * @return Container
      */
-    public BaseContainer unload()
+    public BaseContainer unload() 
     {
         BaseContainer temp = this._container;
         this._container = null;
+
         return temp;
     }
 
