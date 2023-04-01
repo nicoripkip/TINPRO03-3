@@ -56,9 +56,6 @@ public class ContainerTruck extends BaseTruck
      */
     public void consume() throws InterruptedException
     {
-        int t = super.getTiming();
-        Thread.sleep(super.getTiming());
-
         if (super.getDock().getContainerLength() == 0) {
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + Colors.TEXT_YELLOW  + super.getTruckName() + Colors.TEXT_RESET +  " is aan het wachten tot er weer containers beschikbaar zijn!");
             
@@ -66,6 +63,7 @@ public class ContainerTruck extends BaseTruck
                 super._thread_finish = true;
                 return;
             } else {
+                Thread.sleep(1000);
                 return;
             }
         }
@@ -76,6 +74,9 @@ public class ContainerTruck extends BaseTruck
         if (this.getContainer() instanceof HeatedContainer || this.getContainer() instanceof CooledContainer) {
             this.getContainer().connectElements();
         }
+
+        int t = super.getTiming();
+        Thread.sleep(super.getTiming());
 
         out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tContainer: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " is geladen op vrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + "!");
         

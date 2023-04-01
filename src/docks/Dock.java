@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import container.HeatedContainer;
 import container.BaseContainer;
+import container.CooledContainer;
 
 
 /**
@@ -13,7 +14,7 @@ import container.BaseContainer;
  */
 public class Dock
 {
-    private final int MAX_CONTAINERS = 5;
+    public final int MAX_CONTAINERS = 5;
 
     private List<BaseContainer> _containers;
     private boolean _ship_departed;
@@ -105,11 +106,23 @@ public class Dock
      */
     public BaseContainer unload() throws InterruptedException
     {
+        int index = 0;
+        int i;
+
         if (this.getContainerList().isEmpty()) {
             return null;
         }
 
-        int index = this.checkIndex();
+        for (i = 0; i < this.getContainerList().size(); i++) {
+            if (this.getContainerList().get(i) instanceof HeatedContainer || this.getContainerList().get(i) instanceof CooledContainer) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index == 0) {
+            index = this.checkIndex();
+        }
 
         if (index == -1) {
             return null;

@@ -18,6 +18,7 @@ public class Pump extends Thread
     private TankerShip _ship;
     private int _pump_buffer;
     private boolean _thread_finished;
+    private int _previous_time = 0;
 
 
     /**
@@ -61,6 +62,10 @@ public class Pump extends Thread
     {
         synchronized (this)
         {
+            // this._previous_time = .getTiming();
+            // Thread.sleep(this._previous_time);
+
+
             while (this._pump_buffer >= MAX_CAPACITY)
             {
                 out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getPumpName() + Colors.TEXT_RESET + " is aan het wachten tot er weer ruimte is in de buffer!");
@@ -82,7 +87,7 @@ public class Pump extends Thread
                 this.getShip().depleate(i);
                 this.fill(i);
             }
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getPumpName() + Colors.TEXT_RESET + " Heeft: " + Colors.TEXT_PURPLE + i +  Colors.TEXT_RESET + "uit het schip gepompt!");
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][]\tPomp: " + Colors.TEXT_CYAN + this.getPumpName() + Colors.TEXT_RESET + " Heeft: " + Colors.TEXT_PURPLE + i +  Colors.TEXT_RESET + "uit het schip gepompt!");
 
             this.notify();
             Thread.sleep(500);
