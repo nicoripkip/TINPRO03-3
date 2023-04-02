@@ -61,7 +61,7 @@ public class ContainerCrane extends BaseCrane
     {
         if (super.getDock().getContainerLength() >= super.getDock().MAX_CONTAINERS) {
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tKraan: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " is aan het wachten tot er weer ruimte is op de dock!");
-            // super.getDock().getContainerList().wait();
+            // super.getDock().getContainerList().wait();C
             return;
         }
 

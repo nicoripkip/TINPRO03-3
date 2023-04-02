@@ -5,16 +5,17 @@ import main.Colors;
 import ship.TankerShip;
 import static java.lang.System.out;
 
+import docks.Dock;
+
 
 /**
  * @author Nico van Ommen - 1030808
  * @since 04/10/2022
  */
-public class Pump extends Thread
+public class Pump extends BaseCrane
 {
     private final static int MAX_CAPACITY = 300;
 
-    private String _name;
     private TankerShip _ship;
     private int _pump_buffer;
     private boolean _thread_finished;
@@ -29,7 +30,8 @@ public class Pump extends Thread
      */
     public Pump(String name, TankerShip ship)
     {   
-        this.setPumpName(name);
+        super(name, 0, null);
+
         this.setShip(ship);
         this._pump_buffer = 0;
         this._thread_finished = false;
@@ -62,58 +64,33 @@ public class Pump extends Thread
     {
         synchronized (this)
         {
-            // this._previous_time = .getTiming();
-            // Thread.sleep(this._previous_time);
-
-
-            while (this._pump_buffer >= MAX_CAPACITY)
+            if (this._pump_buffer >= MAX_CAPACITY)
             {
-                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getPumpName() + Colors.TEXT_RESET + " is aan het wachten tot er weer ruimte is in de buffer!");
+                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " is aan het wachten tot er weer ruimte is in de buffer!");
                 this.wait();
             }
 
             if (this.getShip().isEmpty())
             {
-                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getPumpName() + Colors.TEXT_RESET + " stopt met werken aangezien het ship leeg is!");
+                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " stopt met werken aangezien het ship leeg is!");
                 this.getShip().setDeparted(true);
                 this._thread_finished = true;
             }
 
             int i;
+            this._previous_time = this.getTiming();
+            Thread.sleep(this._previous_time);
 
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getPumpName() + Colors.TEXT_RESET + " gaat olie uit het schip pompen!");
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " gaat olie uit het schip pompen!");
             for (i = 0; i < MAX_CAPACITY; i++) 
             {
                 this.getShip().depleate(i);
                 this.fill(i);
             }
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][]\tPomp: " + Colors.TEXT_CYAN + this.getPumpName() + Colors.TEXT_RESET + " Heeft: " + Colors.TEXT_PURPLE + i +  Colors.TEXT_RESET + "uit het schip gepompt!");
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][]\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " Heeft: " + Colors.TEXT_PURPLE + i +  Colors.TEXT_RESET + "uit het schip gepompt!");
 
             this.notify();
-            Thread.sleep(500);
         }
-    }
-
-
-    /**
-     * Methode voor het zetten van de pompnaam
-     * 
-     * @param name
-     */
-    public void setPumpName(String name)
-    {
-        this._name = name;
-    }
-
-
-    /**
-     * Methode voor het ophalen van de pompnaam
-     * 
-     * @return String
-     */
-    public String getPumpName()
-    {
-        return this._name;
     }
 
 

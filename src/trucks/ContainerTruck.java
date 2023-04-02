@@ -118,7 +118,7 @@ public class ContainerTruck extends BaseTruck
      * 
      * @return Container
      */
-    private BaseContainer getContainer()
+    public BaseContainer getContainer()
     {
         return this._container;
     }

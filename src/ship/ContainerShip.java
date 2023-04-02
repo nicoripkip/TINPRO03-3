@@ -123,7 +123,7 @@ public class ContainerShip extends BaseShip
      * Methode voor het uitladen van het schip
      * @throws InterruptedException
      */
-    public synchronized BaseContainer unload() throws InterruptedException
+    public BaseContainer unload() throws InterruptedException
     {
         if (this.getContainerList().isEmpty()) {
             return null;

@@ -91,7 +91,7 @@ public class Dock
      * @param container
      * @throws InterruptedException
      */
-    public synchronized void load(BaseContainer container) throws InterruptedException
+    public void load(BaseContainer container) throws InterruptedException
     {
         container.getSemaphore().release();
         this.getContainerList().add(container);
@@ -106,12 +106,12 @@ public class Dock
      */
     public BaseContainer unload() throws InterruptedException
     {
-        int index = 0;
-        int i;
-
         if (this.getContainerList().isEmpty()) {
             return null;
         }
+
+        int index = 0;
+        int i;
 
         for (i = 0; i < this.getContainerList().size(); i++) {
             if (this.getContainerList().get(i) instanceof HeatedContainer || this.getContainerList().get(i) instanceof CooledContainer) {
@@ -155,32 +155,5 @@ public class Dock
     public boolean getShipDeparted()
     {
         return this._ship_departed;
-    }
-
-
-    /**
-     * Methode voor het checken of een container aanwezig is
-     * 
-     * @param type
-     * @return
-     */
-    public boolean containsContainerType()
-    {
-        int i = 0;
-
-        for (BaseContainer c : this.getContainerList()) 
-        {
-            if (c instanceof HeatedContainer)
-            {
-                i++;
-            }
-        }
-
-        if (i > 0)
-        {
-            return true;
-        }
-
-        return false;
     }
 }
