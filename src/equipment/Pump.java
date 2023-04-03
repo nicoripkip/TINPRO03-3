@@ -5,8 +5,6 @@ import main.Colors;
 import ship.TankerShip;
 import static java.lang.System.out;
 
-import docks.Dock;
-
 
 /**
  * @author Nico van Ommen - 1030808

@@ -71,9 +71,6 @@ public class OilTruck extends BaseTruck {
             int i;
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + Colors.TEXT_YELLOW + super.getTruckName() + Colors.TEXT_RESET + " gaat olie uit de pomp pompen!");
             
-            // this._previous_time = this.getTiming();
-            // Thread.sleep(this._previous_time);
-            
             for (i = 0; i < MAX_LITERS; i++)
             {
                 this.getPump().depleate(i);
