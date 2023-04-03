@@ -14,6 +14,7 @@ public class OilTruck extends BaseTruck {
 
     private int _tank_body = 0;
     private Pump _pump;
+    private int _previous_time;
     
 
     /**
@@ -69,12 +70,16 @@ public class OilTruck extends BaseTruck {
 
             int i;
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + Colors.TEXT_YELLOW + super.getTruckName() + Colors.TEXT_RESET + " gaat olie uit de pomp pompen!");
+            
+            // this._previous_time = this.getTiming();
+            // Thread.sleep(this._previous_time);
+            
             for (i = 0; i < MAX_LITERS; i++)
             {
                 this.getPump().depleate(i);
                 this.load(i);
             }
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + Colors.TEXT_YELLOW + super.getTruckName() + Colors.TEXT_RESET + " heeft: " + Colors.TEXT_PURPLE + i + " liters" + Colors.TEXT_RESET + " uit de pomp gepompt!");
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + this._previous_time + Colors.TEXT_RESET + "]\tVrachtwagen: " + Colors.TEXT_YELLOW + super.getTruckName() + Colors.TEXT_RESET + " heeft: " + Colors.TEXT_PURPLE + i + " liters" + Colors.TEXT_RESET + " uit de pomp gepompt!");
 
             this.getPump().notify();
             Thread.sleep(super.getTiming());

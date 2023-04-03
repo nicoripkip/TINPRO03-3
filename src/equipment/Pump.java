@@ -78,16 +78,17 @@ public class Pump extends BaseCrane
             }
 
             int i;
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " gaat olie uit het schip pompen!");
+            
             this._previous_time = this.getTiming();
             Thread.sleep(this._previous_time);
-
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " gaat olie uit het schip pompen!");
+            
             for (i = 0; i < MAX_CAPACITY; i++) 
             {
                 this.getShip().depleate(i);
                 this.fill(i);
             }
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][]\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " Heeft: " + Colors.TEXT_PURPLE + i +  Colors.TEXT_RESET + "uit het schip gepompt!");
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + this._previous_time + Colors.TEXT_RESET + "]\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " Heeft: " + Colors.TEXT_PURPLE + i +  Colors.TEXT_RESET + "uit het schip gepompt!");
 
             this.notify();
         }
