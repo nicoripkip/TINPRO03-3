@@ -20,10 +20,10 @@ public class CooledContainer extends BaseContainer
      * @param name
      * @param dimensions
      */
-    public CooledContainer(String name, int[] dimensions)
+    public CooledContainer(String name, int[] dimensions, long id)
     {
         super(name, dimensions);
-        super.generateNewUUID();
+        this.generateNewUUID(id);
     }
 
 

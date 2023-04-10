@@ -21,7 +21,6 @@ public class ContainerShip extends BaseShip
     
     private List<BaseContainer> _containers;
     private Random _random = new Random();
-    private int _index;
 
 
     /**
@@ -50,13 +49,13 @@ public class ContainerShip extends BaseShip
         for (i = 0; i < size; i++) {
             switch (this._random.nextInt(3)) {
                 case 0:
-                    this.getContainerList().add(new Container("Container"+i, dimensions));
+                    this.getContainerList().add(new Container("Container"+i, dimensions, i+1));
                     break;
                 case 1:
-                    this.getContainerList().add(new HeatedContainer("Container"+i, dimensions));
+                    this.getContainerList().add(new HeatedContainer("Container"+i, dimensions, i+1));
                     break;
                 case 2:
-                    this.getContainerList().add(new CooledContainer("Container"+i, dimensions));
+                    this.getContainerList().add(new CooledContainer("Container"+i, dimensions, i+1));
                     break;
             }
         }
@@ -86,29 +85,6 @@ public class ContainerShip extends BaseShip
 
 
     /**
-     * Methode voor het controleren of de container op de index in questie gepakt kan worden
-     * 
-     * @return
-     */
-    private int checkIndex()
-    {
-        this._index = 0;
-
-        if (this.getContainerList().get(this._index).getSemaphore().availablePermits() != 0) {
-            return this._index;
-        }
-
-        this._index++;
-
-        if (this._index > this.getContainerList().size()) {
-            return -1;
-        } else {
-            return this._index;
-        }
-    }
-
-
-    /**
      * Methode om het aantal containers op het 
      * 
      * @return
@@ -129,14 +105,7 @@ public class ContainerShip extends BaseShip
             return null;
         }
 
-        int index = this.checkIndex();
-
-        if (index == -1) {
-            return null;
-        }
-
-        this.getContainerList().get(index).getSemaphore().acquire();
-        BaseContainer temp = this.getContainerList().get(index);
+        BaseContainer temp = this.getContainerList().get(0);
         this.getContainerList().remove(temp);
 
         return temp;

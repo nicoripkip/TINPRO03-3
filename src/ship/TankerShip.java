@@ -28,12 +28,13 @@ public class TankerShip extends BaseShip
      * Methode voor het leeghalen van het schip
      * 
      * @param liters
-     * @return
+     * @return int
      */
-    public void depleate(int liters)
+    public int depleate(int liters)
     {
         int t = this.getCapacity();
         this.setCapacity(t-=liters); 
+        return this.getCapacity();
     }
 
 

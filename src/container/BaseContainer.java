@@ -1,7 +1,6 @@
 package container;
 
 
-import java.util.UUID;
 import java.util.concurrent.Semaphore;
 
 
@@ -14,7 +13,7 @@ public abstract class BaseContainer
     private final int TOTAL_SEMAPHORE_PERMITS = 1;
 
 
-    private UUID _uuid;
+    private long _uuid;
     private String _name;
     private int[] _dimensions;
     private Semaphore _semaphore; 
@@ -60,9 +59,9 @@ public abstract class BaseContainer
     /**
      * Functie voor het genereren van een unieke sleutel
      */
-    public void generateNewUUID()
+    public void generateNewUUID(long id)
     {
-        this._uuid = UUID.randomUUID();
+        this._uuid = id;
     }
 
 
@@ -71,7 +70,7 @@ public abstract class BaseContainer
      * 
      * @return UUID 
      */
-    public UUID getUUID()
+    public long getUUID()
     {
         return this._uuid;
     }

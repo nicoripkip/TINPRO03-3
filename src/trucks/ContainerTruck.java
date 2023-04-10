@@ -56,34 +56,32 @@ public class ContainerTruck extends BaseTruck
      */
     public void consume() throws InterruptedException
     {
-        if (super.getDock().getContainerLength() == 0) {
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + Colors.TEXT_YELLOW  + super.getTruckName() + Colors.TEXT_RESET +  " is aan het wachten tot er weer containers beschikbaar zijn!");
-            
-            if (super.getDock().getShipDeparted()) {
-                super._thread_finish = true;
-                return;
-            } else {
-                Thread.sleep(1000);
-                return;
+        synchronized(this.getDock().getContainerList())
+        {
+            while (this.getDock().getContainerLength() == 0) {
+                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tVrachtwagen: " + Colors.TEXT_YELLOW  + this.getTruckName() + Colors.TEXT_RESET +  " is aan het wachten tot er weer containers beschikbaar zijn!");
+                this.getDock().getContainerList().wait();
             }
-        }
-        
-        this.load(super.getDock().unload());
-        
-        // Checkt of de container type overeen komt met het type vrachtwagen wat deze weg mag rijden
-        if (this.getContainer() instanceof HeatedContainer || this.getContainer() instanceof CooledContainer) {
-            this.getContainer().connectElements();
-        }
+            
+            this.load(super.getDock().unload());
+            
+            // Checkt of de container type overeen komt met het type vrachtwagen wat deze weg mag rijden
+            if (this.getContainer() instanceof HeatedContainer || this.getContainer() instanceof CooledContainer) {
+                this.getContainer().connectElements();
+            }
 
-        int t = super.getTiming();
-        Thread.sleep(super.getTiming());
+            this.getDock().getContainerList().notify();
 
-        out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tContainer: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " is geladen op vrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + "!");
-        
-        // Als de vrachtwagen de container heeft weggereden, verwijder de container uit het model
-        if (this.getContainer() != null) {
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + t + Colors.TEXT_RESET + "]\tVrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + " heeft container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " weggereden!");
-            this.unload();
+            int t = this.getTiming();
+            Thread.sleep(this.getTiming());
+    
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tContainer: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " is geladen op vrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + "!");
+            
+            // Als de vrachtwagen de container heeft weggereden, verwijder de container uit het model
+            if (this.getContainer() != null) {
+                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + t + Colors.TEXT_RESET + "]\tVrachtwagen: " + Colors.TEXT_YELLOW + this.getTruckName() + Colors.TEXT_RESET + " heeft container: " + Colors.TEXT_PURPLE + this.getContainer().getUUID() + Colors.TEXT_RESET + " weggereden!");
+                this.unload();
+            }
         }
     }
 

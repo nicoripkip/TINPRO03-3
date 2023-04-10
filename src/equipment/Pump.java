@@ -18,6 +18,7 @@ public class Pump extends BaseCrane
     private int _pump_buffer;
     private boolean _thread_finished;
     private int _previous_time = 0;
+    private int _oil;
 
 
     /**
@@ -44,6 +45,7 @@ public class Pump extends BaseCrane
             try
             {
                 this.consume();
+                this.produce();
             }
             catch (InterruptedException e)
             {
@@ -62,12 +64,6 @@ public class Pump extends BaseCrane
     {
         synchronized (this)
         {
-            if (this._pump_buffer >= MAX_CAPACITY)
-            {
-                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " is aan het wachten tot er weer ruimte is in de buffer!");
-                this.wait();
-            }
-
             if (this.getShip().isEmpty())
             {
                 out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " stopt met werken aangezien het ship leeg is!");
@@ -75,20 +71,40 @@ public class Pump extends BaseCrane
                 this._thread_finished = true;
             }
 
-            int i;
             out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " gaat olie uit het schip pompen!");
-            
-            this._previous_time = this.getTiming();
-            Thread.sleep(this._previous_time);
-            
-            for (i = 0; i < MAX_CAPACITY; i++) 
-            {
-                this.getShip().depleate(i);
-                this.fill(i);
-            }
-            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + this._previous_time + Colors.TEXT_RESET + "]\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " Heeft: " + Colors.TEXT_PURPLE + i +  Colors.TEXT_RESET + "uit het schip gepompt!");
+        
+            // Bereken de hoeveelheid olie die er per keer wordt uitgehaald
+            this._oil = (int)(Math.random() * (MAX_CAPACITY - 10)) + MAX_CAPACITY;
+            this.getShip().depleate(_oil);
+
+            out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "][" + Colors.TEXT_GREEN + this._previous_time + Colors.TEXT_RESET + "]\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " Heeft: " + Colors.TEXT_PURPLE + this._oil +  Colors.TEXT_RESET + "uit het schip gepompt!");
 
             this.notify();
+            this._previous_time = this.getTiming();
+            Thread.sleep(this._previous_time/2);
+        }
+    }
+
+
+    /**
+     * Methode voor het producren van olie aan de buffer in de pomp
+     * 
+     * @throws InterruptedException
+     */
+    public void produce() throws InterruptedException
+    {
+        synchronized(this)
+        {
+            while (this._pump_buffer >= MAX_CAPACITY)
+            {
+                out.println("[" + Colors.TEXT_BLUE + "info" + Colors.TEXT_RESET + "]\t\tPomp: " + Colors.TEXT_CYAN + this.getCraneName() + Colors.TEXT_RESET + " is aan het wachten tot er weer ruimte is in de buffer!");
+                this.wait();
+            }
+
+            this.fill(this._oil);
+
+            this.notify();
+            Thread.sleep(this._previous_time/2);
         }
     }
 
@@ -150,5 +166,16 @@ public class Pump extends BaseCrane
         }
 
         return false;
+    }
+
+
+    /**
+     * Methode voor het ophalen van de totale pumpbuffer
+     * 
+     * @return int
+     */
+    public int getPumpBuffer()
+    {
+        return this._pump_buffer;
     }
 }

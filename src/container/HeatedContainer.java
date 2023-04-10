@@ -20,10 +20,10 @@ public class HeatedContainer extends BaseContainer
      * @param name
      * @param dimensions
      */
-    public HeatedContainer(String name, int[] dimensions)
+    public HeatedContainer(String name, int[] dimensions, long id)
     {
         super(name, dimensions);
-        super.generateNewUUID();
+        this.generateNewUUID(id);
     }
 
 

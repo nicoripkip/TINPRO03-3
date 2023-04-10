@@ -18,7 +18,6 @@ public class Dock
 
     private List<BaseContainer> _containers;
     private boolean _ship_departed;
-    private int _index;
     
     
     /**
@@ -63,29 +62,6 @@ public class Dock
 
 
     /**
-     * Methode voor het controleren of de container op de index in questie gepakt kan worden
-     * 
-     * @return
-     */
-    private int checkIndex()
-    {
-        this._index = 0;
-
-        if (this.getContainerList().get(this._index).getSemaphore().availablePermits() != 0) {
-            return this._index;
-        }
-
-        this._index++;
-
-        if (this._index > this.getContainerList().size()) {
-            return -1;
-        } else {
-            return this._index;
-        }
-    }
-
-
-    /**
      * Methode voor het laden van de dock
      * 
      * @param container
@@ -113,6 +89,7 @@ public class Dock
         int index = 0;
         int i;
 
+        // Check of er een speciale container op de kade staat
         for (i = 0; i < this.getContainerList().size(); i++) {
             if (this.getContainerList().get(i) instanceof HeatedContainer || this.getContainerList().get(i) instanceof CooledContainer) {
                 index = i;
@@ -120,15 +97,6 @@ public class Dock
             }
         }
 
-        if (index == 0) {
-            index = this.checkIndex();
-        }
-
-        if (index == -1) {
-            return null;
-        }
-
-        this.getContainerList().get(index).getSemaphore().acquire();
         BaseContainer temp = this.getContainerList().get(index);
         this.getContainerList().remove(temp);
 
